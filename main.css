@@ -1,0 +1,82 @@
+/*
+font-family: 'Patrick Hand', cursive;
+font-family: 'Varela Round', sans-serif;
+*/
+
+body {
+    overflow-x: hidden; 
+}
+.jumbotron {
+    padding: 2.4vh; 
+    margin-bottom: 0; 
+}
+.header {
+    /*font-family: 'Patrick Hand', cursive; */
+    font-family: 'Varela Round', sans-serif;
+    background-color: rgb(77, 124, 69);
+}
+
+.header h1 {
+    font-size: 70px; 
+    color: white;
+}
+
+.header p {
+    font-size: 30px; 
+}
+
+.sidebar { 
+    background-color: rgb(153, 201, 201);
+    margin-bottom: 0; 
+    height: 75vh; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: flex-start; 
+    padding-right: 0;
+}
+
+.menu {
+    display: flex; 
+    justify-content: flex-start; 
+    /*font-family: 'Patrick Hand', cursive; */
+    font-family: 'Varela Round', sans-serif;
+    font-size: 20px; 
+    padding-left: 10px;
+}
+
+.menu.item{
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    /*font-family: 'Patrick Hand', cursive; */
+    /*align-items: center; 
+    text-align: center;  */
+    font-size: 25px;
+    border-bottom-style: solid;
+    border-bottom-width: 5px; 
+    border-bottom-color: #dcdcdc;
+    padding-top: 1em; 
+    
+}
+
+.menu.item:hover{
+    cursor: pointer;
+    background-color: #466666;
+}
+
+.display.item {
+    display: none; 
+}
+
+.display.item {
+    padding: 20px;
+}
+
+.display.item.t1 p {
+    text-indent: 4em; 
+    font-size: 14px; 
+}
+
+.display.item.t1 h2 {
+    color: #6699ff;
+}
