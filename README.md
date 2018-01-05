@@ -1,2 +1,2 @@
 # jarodboone.github.io
-Website to publish data visualization projects
+Website to publish future data visualization projects
