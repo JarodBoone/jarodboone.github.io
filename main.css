@@ -13,7 +13,7 @@ body {
 .header {
     /*font-family: 'Patrick Hand', cursive; */
     font-family: 'Varela Round', sans-serif;
-    background-color: rgb(77, 124, 69);
+    background-color: rgba(77, 124, 69, 0.692);
 }
 
 .header h1 {
@@ -26,7 +26,7 @@ body {
 }
 
 .sidebar { 
-    background-color: rgb(153, 201, 201);
+    background-color: rgb(145, 163, 163);
     margin-bottom: 0; 
     height: 75vh; 
     display: flex; 
@@ -70,13 +70,23 @@ body {
 
 .display.item {
     padding: 20px;
+    height: 75vh; 
+    overflow-y: scroll;
 }
 
 .display.item.t1 p {
     text-indent: 4em; 
-    font-size: 14px; 
+    font-size: 18px; ; 
 }
 
 .display.item.t1 h2 {
     color: #6699ff;
+}
+
+.display.item.t2 h2 {
+    color: #00cc66;
+}
+
+.game_board {
+    border-style: solid; 
 }
