@@ -9,6 +9,7 @@ body {
 .jumbotron {
     padding: 2.4vh; 
     margin-bottom: 0; 
+    border-radius: 0px; 
 }
 .header {
     /*font-family: 'Patrick Hand', cursive; */
@@ -85,8 +86,5 @@ body {
 
 .display.item.t2 h2 {
     color: #00cc66;
-}
-
-.game_board {
-    border-style: solid; 
+    margin-bottom: 20px; 
 }
