@@ -39,6 +39,7 @@ $(document).ready(function () {
     if (!tab) {
         tab = default_tab;
     }
+
     selectors.forEach(function (slc) {
         slc.mouseover(function (tabs) {
             slc.css({ 
@@ -46,7 +47,8 @@ $(document).ready(function () {
                 'border-bottom-color': slc.attr('data-bd-color'),
                 'border-bottom-width': border_enlarge,
                 'color': slc.attr('data-bd-color')
-            });
+            }); 
+            
         });
 
         slc.mouseout(function (tabs) {
