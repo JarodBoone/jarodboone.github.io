@@ -1,40 +1,93 @@
 (function () {
 
+    function Cell(x,y){
+        this.isAlive = false; 
+        this.graphic = null; 
+        this.x = x; 
+        this.y = y; 
+    }
+
     var gol = {
 
-        width: 400, 
-        height: 400,
+        width: 450, 
+        height: 450,
 
-        numberOfBlocks: 25,
+        numberOfBlocks: 45,
 
-        blockHeight: this.height/this.numberOfBlocks,
-        blockWidth: this.width/this.numberOfBlocks,
+        blockHeight: 0,
+        blockWidth: 0,
 
-        init : function () {
-            // alert("init"); 
-            var board = d3.select('.game_board')
-                .attr('width',this.width)
-                .attr('height',this.height);
+        cellMatrix: null, 
+        board: null, 
 
-            var state = board.append('svg:svg')
-                .attr('width', this.width)
-                .attr('height', this.height);
-
-            for (var row = 1; row <= this.numberOfBlocks; row++) {
-                // alert(row); 
-                // state.append('svg:line')
-                //     .attr('x1', this.blockWidth)
-                //     .attr('y1',row * this.blockHeight)
-                //     .attr('x2', this.width - this.blockWidth)
-                //     .attr('y2',row * this.blockHeight)
-                //     .style("stroke", "rgb(6,120,155)")
-                //     .style("stroke-width", 2); 
+        kill: function(x,y) {
+            if (!this.cellMatrix[x][y].isAlive) {
+                return; 
             }
-            
+
+            this.cellMatrix[x][y].graphic.remove();
+            this.cellMatrix[x][y].isAlive = false; 
+        }, 
+
+        populate: function (x,y) { 
+            if (this.cellMatrix[x][y].isAlive){
+                alert("cell is already alive"); 
+                return; 
+            }  
+            this.cellMatrix[x][y].isAlive = true; 
+
+            this.cellMatrix[x][y].graphic = this.board.append('rect')
+                .attr('x',x)
+                .attr('y',y)
+                .attr('width',this.blockWidth)
+                .attr('height',this.blockHeight)
+                .attr('fill','rgb(0,204,102)');       
+        }, 
+
+        // need to call this function before any the board is used 
+        init : function () {
+            // determine the blockHeight and block width
+            this.blockHeight = this.height/this.numberOfBlocks; 
+            this.blockWidth = this.width/this.numberOfBlocks;
+
+            // have to use jquery to set the game_board elements for some reason because
+            // D3 does not want to cooperate 
+            $('.game_board').css({ 
+                "width": this.width,
+                "height": this.height
+            });  
+
+            this.board = d3.select('.game_board').append('svg'); 
+
+            // size the game board to the given width and height
+            this.board.attr('width', this.width)
+                .attr('height', this.height); 
+
+            this.cellMatrix = new Array(this.numberOfBlocks); 
+            // create the grid
+            for (var row = 0; row <= this.numberOfBlocks; row++) {
+                this.board.append('svg:line')
+                    .attr('x1',0)
+                    .attr('y1',row * this.blockHeight)
+                    .attr('x2', this.width)
+                    .attr('y2',row * this.blockHeight)
+                    .style("stroke", "rgb(0,0,0)")
+                    .style("stroke-width", 1); 
+
+                this.board.append('svg:line')
+                    .attr('x1',row * this.blockWidth)
+                    .attr('y1',0)
+                    .attr('x2', row * this.blockWidth)
+                    .attr('y2', this.height)
+                    .style("stroke", "rgb(0,0,0)")
+                    .style("stroke-width", 1); 
+
+                this.cellMatrix[row] = new Array(this.numberOfBlocks); 
+                for (var col = 0; col < this.numberOfBlocks; col++) {
+                    this.cellMatrix[row][col] = new Cell(row,col); 
+                }
+            }
         }
-
-
-
     };
 
     gol.init(); 
