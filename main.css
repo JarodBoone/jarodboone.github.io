@@ -6,6 +6,7 @@ font-family: 'Varela Round', sans-serif;
 body {
     overflow-x: hidden; 
 }
+
 .jumbotron {
     padding: 2.4vh; 
     margin-bottom: 0; 
@@ -87,4 +88,19 @@ body {
 .display.item.t2 h2 {
     color: #00cc66;
     margin-bottom: 20px; 
+}
+
+/* GAME */ 
+
+.gb_container {
+    border-style: solid; 
+    width: 90%; 
+    display: flex; 
+    justify-content: space-evenly; 
+    align-items: center;  
+}
+
+.gb_container button { 
+    height: 40px; 
+    font-family: 'Varela Round', sans-serif;
 }
