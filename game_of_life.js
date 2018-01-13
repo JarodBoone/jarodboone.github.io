@@ -1,10 +1,5 @@
 (function () {
-
-    // sleep function for timing purposes 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-      }
-
+    
     // cell object 
     function Cell(x,y){
         this.isAlive = false; 
@@ -332,7 +327,7 @@
                     },100); 
 
                 })(); 
-                
+
             }); 
 
             $('.stop').click({gol: this}, function(event) { 
