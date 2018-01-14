@@ -1,5 +1,5 @@
 (function () {
-    
+
     // cell object 
     function Cell(x,y){
         this.isAlive = false; 
@@ -104,7 +104,7 @@
                 var down = cell.y - 1; 
 
                 // determine number of live neighboors 
-                if (up >= 0  && up <= this.numberOfBlocks) {
+                if (up >= 0  && up < this.numberOfBlocks) {
                     var north = this.cellMatrix[cell.x][up]; 
 
                     if (watch.includes(north) || this.state.includes(north)) {
@@ -114,7 +114,7 @@
                         watch.push(north); 
                     }
 
-                    if (left >= 0  && left <= this.numberOfBlocks) { 
+                    if (left >= 0  && left < this.numberOfBlocks) { 
                         var west = this.cellMatrix[left][cell.y]; 
                         var northwest = this.cellMatrix[left][up]; 
     
@@ -133,7 +133,7 @@
                         }
                     }
 
-                    if (right >= 0  && right <= this.numberOfBlocks) { 
+                    if (right >= 0  && right < this.numberOfBlocks) { 
                         var east = this.cellMatrix[right][cell.y]; 
                         var northeast = this.cellMatrix[right][up]; 
     
@@ -153,7 +153,7 @@
                     }
                 }
 
-                if (down >= 0  && down <= this.numberOfBlocks) { 
+                if (down >= 0  && down < this.numberOfBlocks) { 
                     var south = this.cellMatrix[cell.x][down]; 
 
                     if (watch.includes(south) || this.state.includes(south)) {
@@ -163,7 +163,7 @@
                         watch.push(south); 
                     }
 
-                    if (left >= 0  && left <= this.numberOfBlocks) { 
+                    if (left >= 0  && left < this.numberOfBlocks) { 
                         var southwest = this.cellMatrix[left][down]; 
     
                         if (watch.includes(southwest) || this.state.includes(southwest)) { 
@@ -174,7 +174,7 @@
                         }
                     }
     
-                    if (right >= 0  && right <= this.numberOfBlocks) { 
+                    if (right >= 0  && right < this.numberOfBlocks) { 
                         var southeast = this.cellMatrix[right][down]; 
     
                         if (watch.includes(southeast) || this.state.includes(southeast)) { 
@@ -261,7 +261,7 @@
                     .attr('y1',0)
                     .attr('x2', row * this.blockWidth)
                     .attr('y2', this.height)
-                    .style("stroke", "rgb(20,123,0)")
+                    .style("stroke", "rgb(123,20,13)")
                     .style("stroke-width", 1); 
                 } else { 
                     this.board.append('svg:line')
