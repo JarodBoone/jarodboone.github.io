@@ -219,6 +219,15 @@
 
         }, 
 
+        // remove all live cells on the board 
+        clean : function () {
+            while(this.state.length > 0) {
+                this.kill(this.state[0].x,this.state[0].y); 
+            }
+
+            return; 
+        },
+
         // need to call this function before any the board is used 
         init : function () {
             // determine the blockHeight and block width
@@ -332,6 +341,10 @@
 
             $('.stop').click({gol: this}, function(event) { 
                 event.data.gol.running = false; 
+            }); 
+
+            $('.clean').click({gol: this}, function (event) {
+                event.data.gol.clean(); 
             }); 
 
             this.loadState(null); 
