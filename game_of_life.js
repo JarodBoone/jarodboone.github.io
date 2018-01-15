@@ -80,10 +80,25 @@
                 this.populate(sx - 1,sy + 1); 
                 this.populate(sx, sy + 4); 
                 this.populate(sx + 4, sy); 
-            } else { 
-                for (var i = 0; i < state.length; i++){ 
-                    // populate each cell specified by the state array 
-                }
+            } else if (state == 1) { 
+                var sx = Math.ceil(this.numberOfBlocks/2); 
+                var sy = Math.ceil(this.numberOfBlocks/2); 
+
+                this.populate(sx,sy); 
+                this.populate(sx - 1,sy); 
+                this.populate(sx - 2,sy); 
+
+                this.populate(sx + 1, sy + 1); 
+                this.populate(sx + 1, sy + 2); 
+                this.populate(sx + 1, sy + 3); 
+
+                this.populate(sx,sy + 5); 
+                this.populate(sx - 1,sy + 5); 
+                this.populate(sx - 2,sy + 5); 
+
+                this.populate(sx - 4,)
+
+
             }
             
             return; 
@@ -313,11 +328,11 @@
                 }
             });
 
-            $('.tick').click({gol: this}, function(event) { 
+            $('#tick').click({gol: this}, function(event) { 
                 event.data.gol.tick(); 
             }); 
 
-            $('.start').click({gol: this}, function(event) {
+            $('#start').click({gol: this}, function(event) {
                 //alert("running"); 
                 var gol = event.data.gol; 
                 
@@ -325,7 +340,7 @@
 
                 (function ticker() {
 
-                    if (!gol.running) {
+                    if (!gol.running || !gol.state.length) {
                         return; 
                     }
 
@@ -339,11 +354,11 @@
 
             }); 
 
-            $('.stop').click({gol: this}, function(event) { 
+            $('#stop').click({gol: this}, function(event) { 
                 event.data.gol.running = false; 
             }); 
 
-            $('.clean').click({gol: this}, function (event) {
+            $('#clean').click({gol: this}, function (event) {
                 event.data.gol.clean(); 
             }); 
 
