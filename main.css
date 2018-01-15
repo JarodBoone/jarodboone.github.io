@@ -93,12 +93,11 @@ body {
 /* GAME */ 
 
 .gol_container {
-    border-style: solid; 
     width: 90%; 
     display: flex; 
     justify-content: flex-start;
     height: 450px;  
-    align-items: center;  
+    align-items: center; 
 }
 
 .gol_ui { 
@@ -109,13 +108,17 @@ body {
     align-items: flex-start; 
     border-style: solid; 
     border-width: 10px; 
+    border-color: #d1dde6;
+
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px; 
 }
 
 .basic .btn { 
     border-style: solid; 
     border-width: 2px; 
-    border-color: #000000;
-    color: white; 
+    border-color: #d1dde6;;
+    background-color: white; 
     font-size: 20px; 
     border-radius: 5px; 
     letter-spacing: 0px; 
@@ -127,8 +130,7 @@ body {
 }
 
 .basic .btn:hover { 
-    border-color: orange; 
-    background-color: rgb(87, 87, 87); 
+    color: #00cc66; 
 }
 
 .basic { 
