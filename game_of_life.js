@@ -243,6 +243,168 @@
             return; 
         },
 
+        // default click handler 
+        baseClick: function() { 
+            // reset click handler 
+            $('.game_board').off("click"); 
+            $('.game_board').off("mouseover"); 
+            $('.game_board').off("mouseout"); 
+            $('.game_board').click({gol: this}, function(event) { 
+                event.preventDefault; 
+                var gol = event.data.gol; 
+                var boardx = $(this).offset().left; 
+                var boardy = $(this).offset().top; 
+
+                var mx = Math.floor((event.pageX - boardx)/gol.blockWidth); 
+                var my = Math.floor((event.pageY - boardy)/gol.blockHeight); 
+                
+                if (gol.cellMatrix[mx][my].isAlive){
+                    gol.kill(mx,my); 
+                } else { 
+                    gol.populate(mx,my); 
+                }
+            });
+        },
+
+        clickGlider: function () { 
+
+            $('.game_board').off("click"); 
+
+            $(".game_board").click({gol: this}, function (event) {  
+                event.preventDefault; 
+                var gol = event.data.gol; 
+                var boardx = $(this).offset().left; 
+                var boardy = $(this).offset().top; 
+
+                var mx = Math.floor((event.pageX - boardx)/gol.blockWidth); 
+                var my = Math.floor((event.pageY - boardy)/gol.blockHeight);  
+
+                
+               gol.populate(mx,my); 
+               gol.populate(mx - 1,my); 
+               gol.populate(mx + 1,my); 
+               gol.populate(mx, my - 2); 
+               gol.populate(mx + 1,my - 1); 
+               
+            });
+
+        }, 
+
+        clickShip: function () { 
+            $('.game_board').off("click"); 
+
+            $(".game_board").click({gol: this}, function (event) {  
+                event.preventDefault; 
+                var gol = event.data.gol; 
+                var boardx = $(this).offset().left; 
+                var boardy = $(this).offset().top; 
+
+                var mx = Math.floor((event.pageX - boardx)/gol.blockWidth); 
+                var my = Math.floor((event.pageY - boardy)/gol.blockHeight);  
+
+                //alert("nope");
+                
+               gol.populate(mx,my); 
+               gol.populate(mx - 1,my); 
+               gol.populate(mx - 2,my); 
+               gol.populate(mx - 3,my - 1);
+               gol.populate(mx - 3,my - 3);
+               gol.populate(mx + 1,my); 
+               gol.populate(mx + 1, my - 1); 
+               gol.populate(mx + 1,my - 2); 
+               gol.populate(mx,my - 3); 
+            });
+        },
+
+        // function to add mouse handlers to the game board UI 
+        mouseHandlers : function () { 
+            
+            // add click handler 
+            this.baseClick(); 
+            
+
+            $('.btn').mouseover(function(event) { 
+                $(event.target).css('color','orange'); 
+            }); 
+
+            $('.btn').mouseout(function(event) { 
+                if ($(event.target).attr("data-on") == 1) { 
+                    return; 
+                }
+                $(event.target).css('color','black'); 
+            })
+
+            $('#tick').click({gol: this}, function(event) { 
+                event.data.gol.tick(); 
+            }); 
+
+            $('#run').click({gol: this}, function(event) {
+                //alert("running"); 
+                var gol = event.data.gol; 
+                $(event.target).css({'color': 'orange'}); 
+                
+                gol.running = true; 
+                $(event.target).attr({"data-on": 1}); 
+
+                (function ticker() {
+
+                    if (!gol.running || !gol.state.length) {
+                        $(event.target).css({'color': 'initial'}); 
+                        $(event.target).attr({'data-on': 0}); 
+                        return; 
+                    }
+
+                    gol.tick(); 
+
+                    setTimeout(function() {
+                        ticker(); 
+                    },100); 
+                })(); 
+            }); 
+
+            $('#stop').click({gol: this}, function(event) { 
+                event.data.gol.running = false; 
+                $('#run').attr({"data-on": 0}); 
+            }); 
+
+            $('#clean').click({gol: this}, function (event) {
+                event.data.gol.clean(); 
+            }); 
+
+            $('#single').click({gol: this}, function (event) { 
+                // reset pattern buttons 
+                $('.pattern').css({'color': 'black'}).attr({'data-on' : 0});    
+                $(event.target).css({'color':'orange'}); 
+                $(event.target).attr({'data-on' : 1}); 
+
+                //attach base click 
+                gol.baseClick(); 
+            }); 
+
+            $('#glider').click({gol: this}, function (event) { 
+                // reset pattern buttons
+                $('.pattern').css({'color': 'black'}).attr({'data-on' : 0});  
+                $(event.target).css({'color':'orange'}); 
+                $(event.target).attr({'data-on' : 1}); 
+
+                // attatch glider click
+                gol.clickGlider(); 
+            }); 
+
+            $('#ship').click({gol: this}, function (event) { 
+                // reset pattern buttons
+                $('.pattern').css({'color': 'black'}).attr({'data-on' : 0});  
+                $(event.target).css({'color':'orange'}); 
+                $(event.target).attr({'data-on' : 1}); 
+
+                // attatch glider click
+                gol.clickShip(); 
+            }); 
+
+
+
+        },
+
         // need to call this function before any the board is used 
         init : function () {
             // determine the blockHeight and block width
@@ -312,56 +474,9 @@
                 }
             } 
 
-            // add click handler 
-            $('.game_board').click({gol: this}, function(event) { 
-                var gol = event.data.gol; 
-                var boardx = $(this).offset().left; 
-                var boardy = $(this).offset().top; 
-
-                var mx = Math.floor((event.pageX - boardx)/gol.blockWidth); 
-                var my = Math.floor((event.pageY - boardy)/gol.blockHeight); 
-                
-                if (gol.cellMatrix[mx][my].isAlive){
-                    gol.kill(mx,my); 
-                } else { 
-                    gol.populate(mx,my); 
-                }
-            });
-
-            $('#tick').click({gol: this}, function(event) { 
-                event.data.gol.tick(); 
-            }); 
-
-            $('#start').click({gol: this}, function(event) {
-                //alert("running"); 
-                var gol = event.data.gol; 
-                
-                gol.running = true; 
-
-                (function ticker() {
-
-                    if (!gol.running || !gol.state.length) {
-                        return; 
-                    }
-
-                    gol.tick(); 
-
-                    setTimeout(function() {
-                        ticker(); 
-                    },100); 
-
-                })(); 
-
-            }); 
-
-            $('#stop').click({gol: this}, function(event) { 
-                event.data.gol.running = false; 
-            }); 
-
-            $('#clean').click({gol: this}, function (event) {
-                event.data.gol.clean(); 
-            }); 
-
+            this.mouseHandlers();  
+            
+            $('#single').css({'color':'orange'}).attr({'data-on': 1}); 
             this.loadState(null); 
 
         }
