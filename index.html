@@ -86,9 +86,15 @@
                             <div class="gol_ui"> 
                                 <div class="basic"> 
                                     <div class="btn" id="tick">tick</div>
-                                    <div class="btn" id="start">start</div>
+                                    <div class="btn" id="run" data-on=0>run</div>
                                     <div class="btn" id="stop">stop</div>
                                     <div class="btn" id="clean">clean</div>
+                                </div> 
+                                <div class="states"> 
+                                    <div class="label"> Patterns </div>
+                                    <div class="btn pattern" id="single" data-on=0>single</div>
+                                    <div class="btn pattern" id="glider" data-on=0>glider</div>
+                                    <div class="btn pattern" id="ship" data-on=0>ship</div>
                                 </div> 
                             </div> 
                         </div>       
@@ -105,5 +111,6 @@
         <script type="text/javascript" src="game_of_life.js"></script>
         <script type="text/javascript" src="vendor/color_fix.js"></script>
         <script type="text/javascript" src="sidebar.js"></script>
+        <script type="text/javascript" src="main.js"></script>
     </body>
 </html>
