@@ -14,7 +14,7 @@
         width: 450, 
         height: 450,
 
-        numberOfBlocks: 45,
+        numberOfBlocks: 75,
 
         blockHeight: 0,
         blockWidth: 0,
@@ -280,11 +280,11 @@
                 var my = Math.floor((event.pageY - boardy)/gol.blockHeight);  
 
                 
-               gol.populate(mx,my); 
-               gol.populate(mx - 1,my); 
-               gol.populate(mx + 1,my); 
-               gol.populate(mx, my - 2); 
-               gol.populate(mx + 1,my - 1); 
+                gol.populate(mx,my); 
+                gol.populate(mx - 1,my); 
+                gol.populate(mx + 1,my); 
+                gol.populate(mx, my - 2); 
+                gol.populate(mx + 1,my - 1); 
                
             });
 
@@ -301,18 +301,152 @@
 
                 var mx = Math.floor((event.pageX - boardx)/gol.blockWidth); 
                 var my = Math.floor((event.pageY - boardy)/gol.blockHeight);  
-
-                //alert("nope");
                 
-               gol.populate(mx,my); 
-               gol.populate(mx - 1,my); 
-               gol.populate(mx - 2,my); 
-               gol.populate(mx - 3,my - 1);
-               gol.populate(mx - 3,my - 3);
-               gol.populate(mx + 1,my); 
-               gol.populate(mx + 1, my - 1); 
-               gol.populate(mx + 1,my - 2); 
-               gol.populate(mx,my - 3); 
+                gol.populate(mx,my); 
+                gol.populate(mx - 1,my); 
+                gol.populate(mx - 2,my); 
+                gol.populate(mx - 3,my - 1);
+                gol.populate(mx - 3,my - 3);
+                gol.populate(mx + 1,my); 
+                gol.populate(mx + 1, my - 1); 
+                gol.populate(mx + 1,my - 2); 
+                gol.populate(mx,my - 3); 
+            });
+        },
+
+        clickSpider: function () { 
+            $('.game_board').off("click"); 
+
+            $(".game_board").click({gol: this}, function (event) {  
+                event.preventDefault; 
+                var gol = event.data.gol; 
+                var boardx = $(this).offset().left; 
+                var boardy = $(this).offset().top; 
+
+                var mx = Math.floor((event.pageX - boardx)/gol.blockWidth) - 2; 
+                var my = Math.floor((event.pageY - boardy)/gol.blockHeight) - 1;  
+
+                    
+                    
+                gol.populate(mx,my); 
+                gol.populate(mx - 1,my); 
+                gol.populate(mx - 2,my);
+                gol.populate(mx + 1, my - 1); 
+                gol.populate(mx + 1, my - 2); 
+                gol.populate(mx + 1, my - 3); 
+                gol.populate(mx,my - 5); 
+                gol.populate(mx - 1,my - 5); 
+                gol.populate(mx - 2,my - 5);
+                gol.populate(mx - 4, my - 1); 
+                gol.populate(mx - 4, my - 2); 
+                gol.populate(mx - 4, my - 3); 
+                
+                mx = mx + 4; 
+                gol.populate(mx,my); 
+                gol.populate(mx + 1,my); 
+                gol.populate(mx + 2,my);
+                gol.populate(mx - 1, my - 1); 
+                gol.populate(mx - 1, my - 2); 
+                gol.populate(mx - 1, my - 3); 
+                gol.populate(mx,my - 5); 
+                gol.populate(mx + 1,my - 5); 
+                gol.populate(mx + 2,my - 5);
+                gol.populate(mx + 4, my - 1); 
+                gol.populate(mx + 4, my - 2); 
+                gol.populate(mx + 4, my - 3); 
+
+                my = my + 2; 
+                gol.populate(mx,my); 
+                gol.populate(mx + 1,my); 
+                gol.populate(mx + 2,my);
+                gol.populate(mx - 1, my + 1); 
+                gol.populate(mx - 1, my + 2); 
+                gol.populate(mx - 1, my + 3); 
+                gol.populate(mx,my + 5); // switch to negative for dance 
+                gol.populate(mx + 1,my + 5); 
+                gol.populate(mx + 2,my + 5);
+                gol.populate(mx + 4, my + 1); 
+                gol.populate(mx + 4, my + 2); 
+                gol.populate(mx + 4, my + 3); 
+
+                mx = mx - 4; 
+                gol.populate(mx,my); 
+                gol.populate(mx - 1,my); 
+                gol.populate(mx - 2,my);
+                gol.populate(mx + 1, my + 1); 
+                gol.populate(mx + 1, my + 2); 
+                gol.populate(mx + 1, my + 3); 
+                gol.populate(mx,my + 5); // switch to negative for dance
+                gol.populate(mx - 1,my + 5); 
+                gol.populate(mx - 2,my + 5);
+                gol.populate(mx - 4, my + 1); 
+                gol.populate(mx - 4, my + 2); 
+                gol.populate(mx - 4, my + 3); 
+            });
+        },
+
+        clickBlock: function () { 
+            $('.game_board').off("click"); 
+
+            $(".game_board").click({gol: this}, function (event) {  
+                event.preventDefault; 
+                var gol = event.data.gol; 
+                var boardx = $(this).offset().left; 
+                var boardy = $(this).offset().top; 
+
+                var mx = Math.floor((event.pageX - boardx)/gol.blockWidth); 
+                var my = Math.floor((event.pageY - boardy)/gol.blockHeight);  
+                
+                gol.populate(mx,my); 
+                gol.populate(mx,my - 1);
+                gol.populate(mx - 1,my); 
+                gol.populate(mx - 1,my - 1);
+                
+            });
+        },
+
+        clickDonut: function () { 
+            $('.game_board').off("click"); 
+
+            $(".game_board").click({gol: this}, function (event) {  
+                event.preventDefault; 
+                var gol = event.data.gol; 
+                var boardx = $(this).offset().left; 
+                var boardy = $(this).offset().top; 
+
+                var mx = Math.floor((event.pageX - boardx)/gol.blockWidth); 
+                var my = Math.floor((event.pageY - boardy)/gol.blockHeight);  
+                
+                gol.populate(mx,my); 
+                gol.populate(mx - 1,my - 1);
+                gol.populate(mx - 1,my - 2); 
+                gol.populate(mx,my - 3);
+                gol.populate(mx + 1,my - 1);
+                gol.populate(mx + 1,my - 2);
+                
+            });
+        },
+
+        clickHandle: function () { 
+            $('.game_board').off("click"); 
+
+            $(".game_board").click({gol: this}, function (event) {  
+                event.preventDefault; 
+                var gol = event.data.gol; 
+                var boardx = $(this).offset().left; 
+                var boardy = $(this).offset().top; 
+
+                var mx = Math.floor((event.pageX - boardx)/gol.blockWidth); 
+                var my = Math.floor((event.pageY - boardy)/gol.blockHeight) - 1;  
+                
+                gol.populate(mx,my); 
+                gol.populate(mx - 1,my);
+                gol.populate(mx - 2,my + 1); 
+                gol.populate(mx - 1,my + 2);
+                gol.populate(mx,my + 3);
+                gol.populate(mx + 1,my + 2);
+                gol.populate(mx + 1,my + 1);
+                
             });
         },
 
@@ -402,6 +536,47 @@
             }); 
 
 
+            $('#spider').click({gol: this}, function (event) { 
+                // reset pattern buttons
+                $('.pattern').css({'color': 'black'}).attr({'data-on' : 0});  
+                $(event.target).css({'color':'orange'}); 
+                $(event.target).attr({'data-on' : 1}); 
+
+                // attatch glider click
+                gol.clickSpider(); 
+            }); 
+
+            $('#block').click({gol: this}, function (event) { 
+                // reset pattern buttons
+                $('.pattern').css({'color': 'black'}).attr({'data-on' : 0});  
+                $(event.target).css({'color':'orange'}); 
+                $(event.target).attr({'data-on' : 1}); 
+
+                // attatch glider click
+                gol.clickBlock(); 
+            }); 
+
+            $('#donut').click({gol: this}, function (event) { 
+                // reset pattern buttons
+                $('.pattern').css({'color': 'black'}).attr({'data-on' : 0});  
+                $(event.target).css({'color':'orange'}); 
+                $(event.target).attr({'data-on' : 1}); 
+
+                // attatch glider click
+                gol.clickDonut(); 
+            }); 
+
+            $('#handle').click({gol: this}, function (event) { 
+                // reset pattern buttons
+                $('.pattern').css({'color': 'black'}).attr({'data-on' : 0});  
+                $(event.target).css({'color':'orange'}); 
+                $(event.target).attr({'data-on' : 1}); 
+
+                // attatch glider click
+                gol.clickHandle(); 
+            }); 
+
+
 
         },
 
@@ -433,39 +608,23 @@
             // create the grid
             for (var row = 0; row <= this.numberOfBlocks; row++) {
 
-                if (row == 25) { 
-                    this.board.append('svg:line')
-                    .attr('x1',0)
-                    .attr('y1',row * this.blockHeight)
-                    .attr('x2', this.width)
-                    .attr('y2',row * this.blockHeight)
-                    .style("stroke", "rgb(123,20,13)")
-                    .style("stroke-width", 1); 
+            
+                this.board.append('svg:line')
+                .attr('x1',0)
+                .attr('y1',row * this.blockHeight)
+                .attr('x2', this.width)
+                .attr('y2',row * this.blockHeight)
+                .style("stroke", "rgba(95, 95, 95, 0.178)")
+                .style("stroke-width", 1); 
 
-                    this.board.append('svg:line')
-                    .attr('x1',row * this.blockWidth)
-                    .attr('y1',0)
-                    .attr('x2', row * this.blockWidth)
-                    .attr('y2', this.height)
-                    .style("stroke", "rgb(123,20,13)")
-                    .style("stroke-width", 1); 
-                } else { 
-                    this.board.append('svg:line')
-                    .attr('x1',0)
-                    .attr('y1',row * this.blockHeight)
-                    .attr('x2', this.width)
-                    .attr('y2',row * this.blockHeight)
-                    .style("stroke", "rgb(0,0,0)")
-                    .style("stroke-width", 1); 
-
-                    this.board.append('svg:line')
-                    .attr('x1',row * this.blockWidth)
-                    .attr('y1',0)
-                    .attr('x2', row * this.blockWidth)
-                    .attr('y2', this.height)
-                    .style("stroke", "rgb(0,0,0)")
-                    .style("stroke-width", 1); 
-                }
+                this.board.append('svg:line')
+                .attr('x1',row * this.blockWidth)
+                .attr('y1',0)
+                .attr('x2', row * this.blockWidth)
+                .attr('y2', this.height)
+                .style("stroke", "rgba(95, 95, 95, 0.178)")
+                .style("stroke-width", 1); 
+            
 
                 // initialize cell Matrix columns 
                 this.cellMatrix[row] = new Array(this.numberOfBlocks); 
