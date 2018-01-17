@@ -133,7 +133,7 @@ body {
     color: orange; 
 }
 
-.states .btn:hover {
+.patterns .btn:hover {
     color: orange; 
 }
 
@@ -150,7 +150,7 @@ body {
     border-color: rgb(77, 169, 219); */ 
 }
 
-.states { 
+.patterns { 
     height: 15%; 
     width: 100%; 
     padding-top: 10px; 
