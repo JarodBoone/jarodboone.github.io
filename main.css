@@ -114,7 +114,7 @@ body {
     border-bottom-right-radius: 10px; 
 }
 
-.basic .btn { 
+.btn { 
     border-style: solid; 
     border-width: 2px; 
     border-color: #d1dde6;;
@@ -130,7 +130,11 @@ body {
 }
 
 .basic .btn:hover { 
-    color: #00cc66; 
+    color: orange; 
+}
+
+.states .btn:hover {
+    color: orange; 
 }
 
 .basic { 
@@ -144,4 +148,20 @@ body {
    /* border-style: solid; 
     border-width: 10px; 
     border-color: rgb(77, 169, 219); */ 
+}
+
+.states { 
+    height: 15%; 
+    width: 100%; 
+    padding-top: 10px; 
+    padding-bottom: 10px; 
+    display: flex; 
+    justify-content: space-evenly; 
+   /* border-style: solid; 
+    border-width: 10px; 
+    border-color: rgb(77, 169, 219); */ 
+}
+
+.glider_select { 
+    width: 100px; 
 }
