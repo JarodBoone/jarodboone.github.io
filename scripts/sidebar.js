@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
     var t1 = $('.display.item.t1');
     var t2 = $('.display.item.t2');
     var t3 = $('.display.item.t3');
@@ -12,14 +12,14 @@ $(document).ready(function () {
 
     var tabs = [t1, t2, t3, t4];
     var selectors = [t1_s, t2_s, t3_s, t4_s];
-    var jumbotron = $('.jumbotron');
+    var header = $('.header');
 
-    const default_tab = 0;
-    const base_tab_bd = '#dcdcdc';
-    const sel_tab_bc = '#466666';
+    var default_tab = 0;
+    var base_tab_bd = '#dcdcdc';
+    var sel_tab_bc = '#466666';
 
-    const border_width = '5px';
-    const border_enlarge = '15px';
+    var border_width = '5px';
+    var border_enlarge = '15px';
 
     // if we were passed a tab query we will use that
     // **vestigial**
@@ -55,7 +55,7 @@ $(document).ready(function () {
 
 
     tabs[tab].css({ 'display': 'block' });
-    jumbotron.css({ 'background-color': selectors[tab].attr('data-bd-color') });
+    header.css({ 'background-color': selectors[tab].attr('data-bd-color') });
     selectors[tab].css({ 
         'background-color': sel_tab_bc,
         'border-bottom-color': selectors[tab].attr('data-bd-color'),
@@ -73,7 +73,6 @@ $(document).ready(function () {
 
         if (temp == tab) {
             gol.init(); 
-            //alert("NOOO");
             return; 
         }
 
@@ -94,7 +93,7 @@ $(document).ready(function () {
             'color': selectors[tab].attr('data-bd-color')
         });
 
-        jumbotron.animate({backgroundColor: selectors[tab].attr('data-bd-color')});
+        header.animate({backgroundColor: selectors[tab].attr('data-bd-color')});
 
         setTimeout(function () {
             tabs[tab].fadeIn(200);

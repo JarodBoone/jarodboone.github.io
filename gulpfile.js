@@ -20,8 +20,8 @@ gulp.task('hint',function() {
 //compile sass into css and store in dist/css
 gulp.task('sass',function() { 
     return gulp.src('scss/*.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('dist/css')); 
+        .pipe(sass({outputStyle: 'compressed'}).on('error',sass.logError))
+        .pipe(gulp.dest('dist')); 
 }); 
 
 // Concatenate and minify javascript and store in dist/js 
@@ -41,7 +41,7 @@ gulp.task('watch',function() {
 });
 
 // default task 'gulp'
-gulp.task('default',['hint','scripts','sass','watch']); 
+gulp.task('default',['hint','sass','scripts','watch']); 
 
 
 

@@ -82,10 +82,11 @@
         // loads a specific initial state onto the gol's board
         loadState: function (state) { 
 
+            var sx = Math.ceil(this.numberOfBlocks / 2);
+            var sy = Math.ceil(this.numberOfBlocks / 2); 
+
             // default state
             if (!state) { 
-                var sx = Math.ceil(this.numberOfBlocks/2); 
-                var sy = Math.ceil(this.numberOfBlocks/2); 
 
                 this.populate(sx,sy); 
                 this.populate(sx + 1,sy + 1); 
@@ -94,8 +95,6 @@
                 this.populate(sx + 4, sy); 
 
             } else if (state == 1) { 
-                var sx = Math.ceil(this.numberOfBlocks/2); 
-                var sy = Math.ceil(this.numberOfBlocks/2); 
 
                 this.populate(sx,sy); 
                 this.populate(sx - 1,sy); 
@@ -109,7 +108,7 @@
                 this.populate(sx - 1,sy + 5); 
                 this.populate(sx - 2,sy + 5); 
 
-                this.populate(sx - 4,)
+                this.populate(sx - 4,sy + 5); 
 
             }
             
@@ -125,7 +124,7 @@
             
             // determine neighboors 
             for (var i = 0; i < this.state.length; i++){ 
-                var cell = this.state[i]
+                var cell = this.state[i];
 
                 var right = cell.x + 1;
                 var left = cell.x - 1; 
@@ -261,7 +260,7 @@
             // reset click handler 
             $('.game_board').off("click"); 
             $('.game_board').click({gol: this}, function(event) { 
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -282,7 +281,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -305,7 +304,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -400,7 +399,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -420,7 +419,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -442,7 +441,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 

@@ -2,13 +2,16 @@
 
     // cell object 
     function Cell(x,y){
-        this.isAlive = false; 
-        this.graphic = null; 
+        this.isAlive = false; // boolean stating if cell is alive or dead
+        this.graphic = null; // the svg associated with a cell, null if dead 
+
+        // coordinates of the cell on grid 
         this.x = x; 
         this.y = y; 
         this.neighboors = 0; 
     }
 
+    // game of life object
     var gol = {
 
         width: 450, 
@@ -19,15 +22,19 @@
         blockHeight: 0,
         blockWidth: 0,
 
-        // initialize in init function 
+        // fill in init function 
         cellMatrix: null, 
         board: null,    
-        state: null, // list of alive cells in the state of the game 
+
+        // list of alive cells in the state of the game
+        state: null, 
 
         // are we ticking? 
         running: false, 
 
-        // if the cell at x,y is alive remove its graphic 
+        // **** Kill Function ****
+        // remove the graphic of the cell at (x,y) and delete cell 
+        // from the state list if the cell is alive
         kill: function(x,y) {
 
             if (!this.cellMatrix[x][y].isAlive) {
@@ -35,6 +42,7 @@
             }
 
             this.cellMatrix[x][y].graphic.remove();
+            this.cellMatrix[x][y].graphic = null; 
             this.cellMatrix[x][y].isAlive = false; 
 
             var index = this.state.indexOf(this.cellMatrix[x][y]); 
@@ -47,7 +55,9 @@
             
         }, 
 
-        // if the cell at x,y is not alive add a graphic
+        // **** Populate Function ****
+        // add a graphic to the cell and set alive if the cell
+        // is dead 
         populate: function (x,y) { 
 
             if (this.cellMatrix[x][y].isAlive){
@@ -68,21 +78,23 @@
             return; 
         }, 
 
+        // **** Load Function ****
+        // loads a specific initial state onto the gol's board
         loadState: function (state) { 
+
+            var sx = Math.ceil(this.numberOfBlocks / 2);
+            var sy = Math.ceil(this.numberOfBlocks / 2); 
 
             // default state
             if (!state) { 
-                var sx = Math.ceil(this.numberOfBlocks/2); 
-                var sy = Math.ceil(this.numberOfBlocks/2); 
 
                 this.populate(sx,sy); 
                 this.populate(sx + 1,sy + 1); 
                 this.populate(sx - 1,sy + 1); 
                 this.populate(sx, sy + 4); 
                 this.populate(sx + 4, sy); 
+
             } else if (state == 1) { 
-                var sx = Math.ceil(this.numberOfBlocks/2); 
-                var sy = Math.ceil(this.numberOfBlocks/2); 
 
                 this.populate(sx,sy); 
                 this.populate(sx - 1,sy); 
@@ -96,14 +108,15 @@
                 this.populate(sx - 1,sy + 5); 
                 this.populate(sx - 2,sy + 5); 
 
-                this.populate(sx - 4,)
-
+                this.populate(sx - 4,sy + 5); 
 
             }
             
             return; 
         },
 
+        // **** Tick Function **** 
+        // apply the rules of game of life to every cell on the game board
         tick : function () { 
 
             // array of cells that could potentially be brought to life 
@@ -111,7 +124,7 @@
             
             // determine neighboors 
             for (var i = 0; i < this.state.length; i++){ 
-                var cell = this.state[i]
+                var cell = this.state[i];
 
                 var right = cell.x + 1;
                 var left = cell.x - 1; 
@@ -213,8 +226,6 @@
                 }
 
                 this.state[i].neighboors = 0; 
-
-                //alert(this.state[i].x + ' ' + this.state[i].y + ' has ' + this.state[i].neighboors);
             }
 
             for (var i = 0; i < killMe.length; i++) { 
@@ -234,7 +245,8 @@
 
         }, 
 
-        // remove all live cells on the board 
+        // **** Clean Function ****
+        // kill all cells on the current game board 
         clean : function () {
             while(this.state.length > 0) {
                 this.kill(this.state[0].x,this.state[0].y); 
@@ -244,13 +256,11 @@
         },
 
         // default click handler 
-        baseClick: function() { 
+        clickSingle: function() { 
             // reset click handler 
             $('.game_board').off("click"); 
-            $('.game_board').off("mouseover"); 
-            $('.game_board').off("mouseout"); 
             $('.game_board').click({gol: this}, function(event) { 
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -271,7 +281,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -294,7 +304,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -389,7 +399,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -409,7 +419,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -431,7 +441,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -477,9 +487,8 @@
         mouseHandlers : function () { 
             
             // add click handler 
-            this.baseClick(); 
+            this.clickSingle(); 
             
-
             $('.btn').mouseover(function(event) { 
                 $(event.target).css('color','orange'); 
             }); 
@@ -534,8 +543,8 @@
                 $(event.target).css({'color':'orange'}); 
                 $(event.target).attr({'data-on' : 1}); 
 
-                //attach base click 
-                gol.baseClick(); 
+                //attach single click 
+                gol.clickSingle(); 
             }); 
 
             $('#glider').click({gol: this}, function (event) { 
@@ -554,7 +563,7 @@
                 $(event.target).css({'color':'orange'}); 
                 $(event.target).attr({'data-on' : 1}); 
 
-                // attatch glider click
+                // attatch ship click
                 gol.clickShip(); 
             }); 
 
@@ -565,7 +574,7 @@
                 $(event.target).css({'color':'orange'}); 
                 $(event.target).attr({'data-on' : 1}); 
 
-                // attatch glider click
+                // attatch spider click
                 gol.clickSpider(); 
             }); 
 
@@ -575,7 +584,7 @@
                 $(event.target).css({'color':'orange'}); 
                 $(event.target).attr({'data-on' : 1}); 
 
-                // attatch glider click
+                // attatch block click
                 gol.clickBlock(); 
             }); 
 
@@ -585,7 +594,7 @@
                 $(event.target).css({'color':'orange'}); 
                 $(event.target).attr({'data-on' : 1}); 
 
-                // attatch glider click
+                // attatch donut click
                 gol.clickDonut(); 
             }); 
 
@@ -595,7 +604,7 @@
                 $(event.target).css({'color':'orange'}); 
                 $(event.target).attr({'data-on' : 1}); 
 
-                // attatch glider click
+                // attatch handle click
                 gol.clickHandle(); 
             }); 
 
@@ -679,18 +688,18 @@
 }());
 
 
+// function to get url query parameters by query name 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 $(document).ready(function () {
 
-    // function to get url query parameters by query name 
-    function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
     var t1 = $('.display.item.t1');
     var t2 = $('.display.item.t2');
     var t3 = $('.display.item.t3');
@@ -703,14 +712,14 @@ $(document).ready(function () {
 
     var tabs = [t1, t2, t3, t4];
     var selectors = [t1_s, t2_s, t3_s, t4_s];
-    var jumbotron = $('.jumbotron');
+    var header = $('.header');
 
-    const default_tab = 0;
-    const base_tab_bd = '#dcdcdc';
-    const sel_tab_bc = '#466666';
+    var default_tab = 0;
+    var base_tab_bd = '#dcdcdc';
+    var sel_tab_bc = '#466666';
 
-    const border_width = '5px';
-    const border_enlarge = '15px';
+    var border_width = '5px';
+    var border_enlarge = '15px';
 
     // if we were passed a tab query we will use that
     // **vestigial**
@@ -746,7 +755,7 @@ $(document).ready(function () {
 
 
     tabs[tab].css({ 'display': 'block' });
-    jumbotron.css({ 'background-color': selectors[tab].attr('data-bd-color') });
+    header.css({ 'background-color': selectors[tab].attr('data-bd-color') });
     selectors[tab].css({ 
         'background-color': sel_tab_bc,
         'border-bottom-color': selectors[tab].attr('data-bd-color'),
@@ -764,7 +773,6 @@ $(document).ready(function () {
 
         if (temp == tab) {
             gol.init(); 
-            //alert("NOOO");
             return; 
         }
 
@@ -785,7 +793,7 @@ $(document).ready(function () {
             'color': selectors[tab].attr('data-bd-color')
         });
 
-        jumbotron.animate({backgroundColor: selectors[tab].attr('data-bd-color')});
+        header.animate({backgroundColor: selectors[tab].attr('data-bd-color')});
 
         setTimeout(function () {
             tabs[tab].fadeIn(200);
