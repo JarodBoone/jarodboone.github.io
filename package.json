@@ -1,0 +1,33 @@
+{
+  "name": "jarodboone.github.io",
+  "version": "1.0.0",
+  "description": "Jarod Boone's website containing various web applications. Hosted by the incomparable github.com",
+  "main": "index.js ",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JarodBoone/jarodboone.github.io.git"
+  },
+  "keywords": [
+    "web",
+    "javascript",
+    "d3.js"
+  ],
+  "author": "Jarod Boone",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JarodBoone/jarodboone.github.io/issues"
+  },
+  "homepage": "https://github.com/JarodBoone/jarodboone.github.io#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-jshint": "^2.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^3.0.0",
+    "jshint": "^2.9.5"
+  }
+}
