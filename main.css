@@ -165,3 +165,11 @@ body {
 .glider_select { 
     width: 100px; 
 }
+
+.label { 
+    /*border-style: solid; */
+    color: #00cc66;
+    font-size: 20px; 
+    margin-top: 8px; 
+    text-align: center; 
+}
