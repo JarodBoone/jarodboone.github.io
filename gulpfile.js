@@ -11,7 +11,7 @@ var rename = require('gulp-rename');
 
 //lint task
 gulp.task('hint',function() {
-    return gulp.src('js/*.js')
+    return gulp.src('scripts/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default')); 
 });
@@ -26,17 +26,17 @@ gulp.task('sass',function() {
 
 // Concatenate and minify javascript and store in dist/js 
 gulp.task('scripts',function() { 
-    return gulp.src('js/*.js')
+    return gulp.src('scripts/*.js')
         .pipe(concat('main.js'))
         .pipe(gulp.dest('dist'))
         .pipe(rename('main.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('dist/js')); 
+        .pipe(gulp.dest('dist')); 
 }); 
 
 // setup watch loop
 gulp.task('watch',function() { 
-    gulp.watch('js/*.js',['hint','scripts']); 
+    gulp.watch('scripts/*.js',['hint','scripts']); 
     gulp.watch('scss/*scss',['sass']); 
 });
 
