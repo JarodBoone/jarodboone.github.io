@@ -628,7 +628,6 @@
             this.height = $('.gol_container').parent().height() * $('.gol_container').height()/100; 
             this.width = this.height; 
 
-            alert(this.height); 
             // determine the blockHeight and block width
             this.blockHeight = this.height/this.numberOfBlocks; 
             this.blockWidth = this.width/this.numberOfBlocks;
