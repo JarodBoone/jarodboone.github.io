@@ -14,8 +14,8 @@
     // game of life object
     var gol = {
 
-        width: 450, 
-        height: 450,
+        width: 0, 
+        height: 0,
 
         numberOfBlocks: 75,
 
@@ -328,7 +328,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -465,7 +465,7 @@
             $('.game_board').off("click"); 
 
             $(".game_board").click({gol: this}, function (event) {  
-                event.preventDefault; 
+                event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
                 var boardy = $(this).offset().top; 
@@ -498,7 +498,7 @@
                     return; 
                 }
                 $(event.target).css('color','black'); 
-            })
+            });
 
             $('#tick').click({gol: this}, function(event) { 
                 event.data.gol.tick(); 
@@ -624,6 +624,11 @@
 
         // need to call this function before any the board is used 
         init : function () {
+            // set dimensions of the game board
+            this.height = $('.gol_container').parent().height() * $('.gol_container').height()/100; 
+            this.width = this.height; 
+
+            alert(this.height); 
             // determine the blockHeight and block width
             this.blockHeight = this.height/this.numberOfBlocks; 
             this.blockWidth = this.width/this.numberOfBlocks;
