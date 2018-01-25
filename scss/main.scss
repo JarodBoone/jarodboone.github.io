@@ -1,16 +1,39 @@
-// Main CSS
+// Main Sass file for jarodboone.github.io
+@import 'mixin'; 
+@import 'gol'; 
+
+//************ Variables ************ 
+// Font Pallet 
 $varela: 'Varela Round', sans-serif;
 
-@import 'mixin'; 
+// Font Sizes 
+$title_fs: 70px; // size for main title
+$subTitle_fs: 30px; // size for sub title and program titles 
+$menu_fs: 25px; // size for menu item titles 
 
+// Color Pallet 
+$c_offGray: rgb(154, 165, 165); 
+$c_cleanGray: rgb(220, 220, 220); 
+$c_darkTeal: rgb(70, 102, 102); 
+$c_saphire: rgb(102, 153, 255);
+$c_openGreen: rgb(0, 204, 102);
+
+
+// Dimensions
+$header_height: 20vh; 
+$sidebar_height: 80vh; 
+
+
+//************ SCSS ************ 
 body {
     overflow-x: hidden; 
     padding: 0; 
 }
 
-// Header css ==============================
+// Header Scss ************************
 .header {
     font-family: $varela;
+    height: $header_height; 
     padding: 2.5vh; 
     margin-bottom: 0;  
     @include border-radius(0); 
@@ -19,62 +42,54 @@ body {
 }
 
 .title h1 {
-    font-size: 70px; 
+    font-size: $title_fs; 
     color: white;
 }
 
 .title p {
-    font-size: 30px; 
+    font-size: $subTitle_fs; 
     color: black; 
 }
 
-// Sidebar css ==============================
+// Sidebar Scss ************************
 .sidebar { 
-    background-color: rgb(145, 163, 163);
-    margin-bottom: 0; 
-    height: 75vh; 
+    background-color: $c_offGray;
+    margin-bottom: 0;
+    margin-right: 0;  
+    height: $sidebar_height; 
+
     display: flex; 
     flex-direction: column;
     justify-content: flex-start; 
     padding-right: 0;
 }
 
-.menu {
-    display: flex; 
-    justify-content: flex-start; 
-    /*font-family: 'Patrick Hand', cursive; */
-    font-family: 'Varela Round', sans-serif;
-    font-size: 20px; 
-    padding-left: 10px;
-}
-
 .menu.item{
+    font-family: $varela; 
+    font-size: $menu_fs;
+    padding-top: 1em;
+
     display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    /*font-family: 'Patrick Hand', cursive; */
-    /*align-items: center; 
-    text-align: center;  */
-    font-size: 25px;
+    flex-direction: row; 
+    justify-content: center;  
+
+    // Bottom border 
     border-bottom-style: solid;
     border-bottom-width: 5px; 
-    border-bottom-color: #dcdcdc;
-    padding-top: 1em; 
+    border-bottom-color: $c_cleanGray;
     
 }
 
 .menu.item:hover{
     cursor: pointer;
-    background-color: #466666;
+    background-color: $c_darkTeal;
 }
 
+// Display Frame Scss ************************
 .display.item {
     display: none; 
-}
-
-.display.item {
     padding: 20px;
-    height: 75vh; 
+    height: $sidebar_height; 
     overflow-y: scroll;
 }
 
@@ -84,94 +99,10 @@ body {
 }
 
 .display.item.t1 h2 {
-    color: #6699ff;
+    color: $c_saphire; 
 }
 
 .display.item.t2 h2 {
-    color: #00cc66;
+    color: $c_openGreen; 
     margin-bottom: 20px; 
-}
-
-/* GAME */ 
-
-.gol_container {
-    width: 90%; 
-    display: flex; 
-    justify-content: flex-start;
-    height: 450px;  
-    align-items: center; 
-}
-
-.gol_ui { 
-    width: 100%; 
-    height: 100%; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: flex-start; 
-    border-style: solid; 
-    border-width: 10px; 
-    border-color: #d1dde6;
-
-    border-top-right-radius: 10px; 
-    border-bottom-right-radius: 10px; 
-}
-
-.btn { 
-    border-style: solid; 
-    border-width: 2px; 
-    border-color: #d1dde6;;
-    background-color: white; 
-    font-size: 20px; 
-    border-radius: 5px; 
-    letter-spacing: 0px; 
-    padding-top: 3px; 
-
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-}
-
-.basic .btn:hover { 
-    color: orange; 
-}
-
-.patterns .btn:hover {
-    color: orange; 
-}
-
-.basic { 
-    height: 15%; 
-    width: 100%; 
-    padding-top: 10px; 
-    padding-bottom: 10px; 
-    display: flex; 
-    justify-content: space-evenly; 
-    //background-color:#00cc6673;
-   /* border-style: solid; 
-    border-width: 10px; 
-    border-color: rgb(77, 169, 219); */ 
-}
-
-.patterns { 
-    height: 15%; 
-    width: 100%; 
-    padding-top: 10px; 
-    padding-bottom: 10px; 
-    display: flex; 
-    justify-content: space-evenly; 
-   /* border-style: solid; 
-    border-width: 10px; 
-    border-color: rgb(77, 169, 219); */ 
-}
-
-.glider_select { 
-    width: 100px; 
-}
-
-.label { 
-    /*border-style: solid; */
-    color: #00cc66;
-    font-size: 20px; 
-    margin-top: 8px; 
-    text-align: center; 
 }
