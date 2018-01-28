@@ -32,8 +32,30 @@
         // list of alive cells in the state of the game
         state: null, 
 
+        // console log 
+        console: $('.gol_console'), 
+        consoleLength: 0,
+
         // are we ticking? 
         running: false, 
+
+        ref: null,
+        setRef: false,
+
+        // Print to console
+        printA: function (text) { 
+            var pt = $('#pt').val(); 
+            this.console.append('<p>' + pt + text +'</p>'); 
+            if (this.consoleLength >= 500) { 
+                this.console.children('p').pop(); 
+            }
+
+        },
+
+        // Print to console without carrots
+        printZ: function (text) {
+            this.console.append('p').text(text);
+        },
 
         // **** Kill Function ****
         // remove the graphic of the cell at (x,y) and delete cell 
@@ -77,8 +99,57 @@
             
             // push onto array of live cells 
             this.state.push(this.cellMatrix[x][y]); 
+            
+            var cellStr; 
+            if (this.ref) { 
+                var xOff = this.cellMatrix[x][y].x - this.ref.x; 
+                var yOff = this.cellMatrix[x][y].y - this.ref.y; 
+                var xSign = xOff < 0 ? '-' : '+';  
+                var ySign = yOff < 0 ? '-' : '+';  
+
+                cellStr = '(mx ' + xSign + ' ' + this.cellMatrix[x][y].x + ','
+                     + 'my ' + ySign + ' ' + this.cellMatrix[x][y].y + ')'
+
+            } else {
+                cellStr = '(' + this.cellMatrix[x][y].x + ',' + this.cellMatrix[x][y].y + ')';
+            }
+            this.printA(cellStr); 
+            this.consoleLength++; 
 
             return; 
+        }, 
+
+
+        // **** Set Reference Function ****
+        // add a graphic to the cell and set alive if the cell
+        // is dead 
+        setReference: function (x, y) {
+
+            if (this.cellMatrix[x][y].isAlive) {
+                this.kill(this.cellMatrix[x][y].x,this.cellMatrix[x][y].y);
+            }
+
+            this.cellMatrix[x][y].isAlive = true;
+            this.cellMatrix[x][y].graphic = this.board.append('rect')
+                .attr('x', x * this.blockWidth)
+                .attr('y', y * this.blockHeight)
+                .attr('width', this.blockWidth)
+                .attr('height', this.blockHeight)
+                .attr('fill', 'rgb(122,30,102)');
+
+            // push onto array of live cells 
+            this.state.push(this.cellMatrix[x][y]);
+            this.ref = this.cellMatrix[x][y]; 
+            this.setRef = false; 
+
+            $('#refSet').css({ 'color': 'black' }).attr({ 'data-on': 0 });
+            $('#refVal').val(this.ref.x + ',' + this.ref.y); 
+
+            var cellStr = '(' + this.cellMatrix[x][y].x + ',' + this.cellMatrix[x][y].y + ')';
+            this.printA(cellStr);
+            this.consoleLength++;
+
+            return;
         }, 
 
         // **** Load Function ****
@@ -263,19 +334,25 @@
             // reset click handler 
             $('.game_board').off("click"); 
             $('.game_board').click({gol: this}, function(event) { 
-                event.preventDefault(); 
-                var gol = event.data.gol; 
-                var boardx = $(this).offset().left; 
-                var boardy = $(this).offset().top; 
+                event.preventDefault();
+                var gol = event.data.gol;
+                var boardx = $(this).offset().left;
+                var boardy = $(this).offset().top;
 
-                var mx = Math.floor((event.pageX - boardx)/gol.blockWidth); 
-                var my = Math.floor((event.pageY - boardy)/gol.blockHeight); 
-                
-                if (gol.cellMatrix[mx][my].isAlive){
-                    gol.kill(mx,my); 
-                } else { 
-                    gol.populate(mx,my); 
-                }
+                var mx = Math.floor((event.pageX - boardx) / gol.blockWidth);
+                var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+
+
+                if (gol.setRef) {
+                    gol.setReference(mx,my); 
+
+                } else {
+                    if (gol.cellMatrix[mx][my].isAlive) {
+                        gol.kill(mx, my);
+                    } else {
+                        gol.populate(mx, my);
+                    }
+                }  
             });
         },
 
@@ -337,9 +414,7 @@
                 var boardy = $(this).offset().top; 
 
                 var mx = Math.floor((event.pageX - boardx)/gol.blockWidth) - 2; 
-                var my = Math.floor((event.pageY - boardy)/gol.blockHeight) - 1;  
-
-                    
+                var my = Math.floor((event.pageY - boardy)/gol.blockHeight) - 1;       
                     
                 gol.populate(mx,my); 
                 gol.populate(mx - 1,my); 
@@ -529,6 +604,29 @@
                         ticker(); 
                     },100); 
                 })(); 
+
+                this.populate
+            }); 
+
+            $('#refSet').click({gol: this}, function(event) { 
+                // reset pattern buttons
+                $('.pattern').css({ 'color': 'black' }).attr({ 'data-on': 0 });
+                $('#single').css({ 'color': 'orange' });
+                $('#single').attr({ 'data-on': 1 }); 
+
+                $(event.target).css({ 'color': 'orange' });
+                $(event.target).attr({ 'data-on': 1 }); 
+
+                gol.setRef = true; 
+
+                gol.clickSingle(); 
+
+            });
+
+            $('#refRem').click({gol: this}, function() { 
+                gol.kill(gol.ref.x,gol.ref.y); 
+                $('#refVal').val(''); 
+                gol.ref = null; 
             }); 
 
             $('#stop').click({gol: this}, function(event) { 
@@ -621,7 +719,7 @@
                 gol.clickGull(); 
             });
 
-
+            $('')
 
         },
 
@@ -739,19 +837,17 @@
 
             this.mouseHandlers();  
             
+            //alert('where'); 
             $('#single').css({'color':'orange'}).attr({'data-on': 1}); 
             this.loadState(null); 
 
             $(window).resize({gol: this}, function(event) {  
                 gol.resize(); 
-                //alert(gol.height); 
             });
-
         }
     };
 
     var a = gol.init(); 
-    gol.resize(); 
 
 }());
 

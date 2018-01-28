@@ -31,7 +31,7 @@ $btn_row_height: 10%;
     justify-content: flex-start;
     height: 90%;  
     align-items: center; 
-    border-style: solid; 
+    //border-style: solid; 
 }
 
 .gol_ui { 
@@ -81,7 +81,6 @@ $btn_row_height: 10%;
     justify-content: space-evenly; 
     background-color: $c_openGreen50; 
 
-    //@include border-radius(10px);
     border-bottom-left-radius: 20px; 
     border-bottom-right-radius: 20px;  
 }
@@ -108,4 +107,20 @@ $btn_row_height: 10%;
     font-size: 20px; 
     margin-top: 8px; 
     text-align: center; 
+}
+
+#refLabel {
+    color: $c_orange; 
+    margin-right: 0; 
+}
+#refVal {
+    margin-left: 0; 
+    //color: $c_orange;
+    width: 3em; 
+}
+
+textarea {
+    height: 2em; 
+    overflow-y: hidden; 
+    margin-top: 7px; 
 }
