@@ -14,41 +14,47 @@
     // game of life object
     var gol = {
 
+        //dimensions of the game board 
         width: 0, 
         height: 0,
 
-        // height percentage for resizing
+        // height percentage for resizing (will probably be 0.90)
         hRatio: 0,
 
-        numberOfBlocks: 75,
+        // the number of blocks in each column or row 
+        numberOfBlocks: 100,
 
+        // calculated from dimension and number of blocks 
         blockHeight: 0,
         blockWidth: 0,
 
-        // fill in init function 
+        // Matrix of all the cells in the game board
         cellMatrix: null, 
+
+        // the svg element acting as the board d
         board: null,    
 
         // list of alive cells in the state of the game
         state: null, 
 
         // console log 
-        console: $('.gol_console'), 
+        console: $('.gol_console p'), 
         consoleLength: 0,
 
         // are we ticking? 
         running: false, 
 
+        // reference cell for printing 
         ref: null,
         setRef: false,
 
         // Print to console
         printA: function (text) { 
-            var pt = $('#pt').val(); 
-            this.console.append('<p>' + pt + text +'</p>'); 
-            if (this.consoleLength >= 500) { 
-                this.console.children('p').pop(); 
-            }
+            var pt = $('#pt').val(); // get pretext 
+            this.console.append(pt + text +'<br>'); 
+            // if (this.consoleLength >= 500) { 
+            //     this.console.children('p').pop(); 
+            // }
 
         },
 
@@ -107,8 +113,10 @@
                 var xSign = xOff < 0 ? '-' : '+';  
                 var ySign = yOff < 0 ? '-' : '+';  
 
-                cellStr = '(mx ' + xSign + ' ' + this.cellMatrix[x][y].x + ','
-                     + 'my ' + ySign + ' ' + this.cellMatrix[x][y].y + ')'
+                var xAddStr = xOff == 0 ? '' : (' ' + xSign + ' ' + Math.abs(xOff)); 
+                var yAddStr = yOff == 0 ? '' : (' ' + ySign + ' ' + Math.abs(yOff)); 
+
+                cellStr = '(mx' + xAddStr + ',' + 'my' + yAddStr + ')';
 
             } else {
                 cellStr = '(' + this.cellMatrix[x][y].x + ',' + this.cellMatrix[x][y].y + ')';
@@ -325,6 +333,10 @@
             while(this.state.length > 0) {
                 this.kill(this.state[0].x,this.state[0].y); 
             }
+
+            this.console.remove(); 
+            $('.gol_console').append('<p></p>');
+            this.console = $('.gol_console p'); 
 
             return; 
         },
@@ -561,6 +573,137 @@
             }); 
         },
 
+        clickRocket: function () {
+
+            $('.game_board').off("click");
+
+            $(".game_board").click({ gol: this }, function (event) {
+                event.preventDefault();
+                var gol = event.data.gol;
+                var boardx = $(this).offset().left;
+                var boardy = $(this).offset().top;
+
+                var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
+                var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+
+                gol.populate(mx, my);
+                gol.populate(mx + 1, my);
+                gol.populate(mx + 2, my);
+                gol.populate(mx - 1, my);
+                gol.populate(mx, my + 1);
+                gol.populate(mx + 1, my + 1);
+                gol.populate(mx - 1, my - 1);
+                gol.populate(mx + 2, my - 1);
+                gol.populate(mx - 1, my - 4);
+                gol.populate(mx + 2, my - 4);
+                gol.populate(mx + 2, my - 5);
+                gol.populate(mx - 1, my - 5);
+                gol.populate(mx, my - 6);
+                gol.populate(mx + 1, my - 6);
+                gol.populate(mx - 2, my - 6);
+                gol.populate(mx - 2, my - 7);
+                gol.populate(mx - 2, my - 8);
+                gol.populate(mx + 3, my - 6);
+                gol.populate(mx + 3, my - 7);
+                gol.populate(mx + 3, my - 8);
+                gol.populate(mx - 1, my - 9);
+                gol.populate(mx - 1, my - 10);
+                gol.populate(mx, my - 10);
+                gol.populate(mx + 1, my - 10);
+                gol.populate(mx + 2, my - 10);
+                gol.populate(mx + 2, my - 9);
+                gol.populate(mx + 2, my - 11);
+                gol.populate(mx + 2, my - 12);
+                gol.populate(mx + 3, my - 12);
+                gol.populate(mx + 3, my - 11);
+                gol.populate(mx - 1, my - 11);
+                gol.populate(mx - 1, my - 12);
+                gol.populate(mx - 2, my - 12);
+                gol.populate(mx - 2, my - 11);
+                gol.populate(mx, my - 14);
+                gol.populate(mx, my - 15);
+                gol.populate(mx, my - 16);
+                gol.populate(mx + 1, my - 16);
+                gol.populate(mx + 1, my - 15);
+                gol.populate(mx + 1, my - 14);
+                gol.populate(mx + 3, my - 16);
+                gol.populate(mx + 4, my - 17);
+                gol.populate(mx + 5, my - 16);
+                gol.populate(mx + 5, my - 15);
+                gol.populate(mx + 4, my - 15);
+                gol.populate(mx - 2, my - 16);
+                gol.populate(mx - 3, my - 17);
+                gol.populate(mx - 4, my - 16);
+                gol.populate(mx - 4, my - 15);
+                gol.populate(mx - 3, my - 15);
+                gol.populate(mx, my + 5);
+                gol.populate(mx + 1, my + 5);
+                gol.populate(mx, my + 6);
+                gol.populate(mx + 1, my + 6);
+                gol.populate(mx + 2, my + 5);
+                gol.populate(mx - 1, my + 5);
+                gol.populate(mx + 3, my + 4);
+                gol.populate(mx + 4, my + 4);
+                gol.populate(mx + 5, my + 4);
+                gol.populate(mx + 6, my + 4);
+                gol.populate(mx + 7, my + 4);
+                gol.populate(mx + 5, my + 5);
+                gol.populate(mx + 6, my + 6);
+                gol.populate(mx + 6, my + 3);
+                gol.populate(mx + 6, my + 2);
+                gol.populate(mx + 6, my + 1);
+                gol.populate(mx + 7, my + 1);
+                gol.populate(mx + 8, my + 3);
+                gol.populate(mx + 8, my);
+                gol.populate(mx + 8, my - 1);
+                gol.populate(mx + 8, my - 2);
+                gol.populate(mx + 7, my - 1);
+                gol.populate(mx - 2, my + 4);
+                gol.populate(mx - 3, my + 4);
+                gol.populate(mx - 4, my + 4);
+                gol.populate(mx - 5, my + 4);
+                gol.populate(mx - 6, my + 4);
+                gol.populate(mx - 7, my + 3);
+                gol.populate(mx - 5, my + 3);
+                gol.populate(mx - 5, my + 2);
+                gol.populate(mx - 5, my + 1);
+                gol.populate(mx - 6, my + 1);
+                gol.populate(mx - 4, my + 5);
+                gol.populate(mx - 5, my + 6);
+                gol.populate(mx - 7, my);
+                gol.populate(mx - 7, my - 1);
+                gol.populate(mx - 7, my - 2);
+                gol.populate(mx - 6, my - 1);
+                gol.populate(mx - 1, my + 7);
+                gol.populate(mx + 2, my + 7);
+                gol.populate(mx, my + 8);
+                gol.populate(mx + 1, my + 8);
+                gol.populate(mx, my + 9);
+                gol.populate(mx + 1, my + 9);
+                gol.populate(mx + 3, my + 9);
+                gol.populate(mx + 4, my + 9);
+                gol.populate(mx - 2, my + 9);
+                gol.populate(mx - 3, my + 9);
+                gol.populate(mx - 4, my + 11);
+                gol.populate(mx - 4, my + 12);
+                gol.populate(mx - 5, my + 12);
+                gol.populate(mx - 3, my + 12);
+                gol.populate(mx - 2, my + 13);
+                gol.populate(mx - 5, my + 13);
+                gol.populate(mx - 5, my + 14);
+                gol.populate(mx - 6, my + 14);
+                gol.populate(mx + 5, my + 11);
+                gol.populate(mx + 4, my + 12);
+                gol.populate(mx + 5, my + 12);
+                gol.populate(mx + 6, my + 12);
+                gol.populate(mx + 3, my + 13);
+                gol.populate(mx + 6, my + 13);
+                gol.populate(mx + 6, my + 14);
+                gol.populate(mx + 7, my + 14);
+
+            });
+        },
+
         // function to add mouse handlers to the game board UI 
         mouseHandlers : function () { 
             
@@ -604,8 +747,6 @@
                         ticker(); 
                     },100); 
                 })(); 
-
-                this.populate
             }); 
 
             $('#refSet').click({gol: this}, function(event) { 
@@ -617,16 +758,16 @@
                 $(event.target).css({ 'color': 'orange' });
                 $(event.target).attr({ 'data-on': 1 }); 
 
-                gol.setRef = true; 
+                event.data.gol.setRef = true; 
 
-                gol.clickSingle(); 
+                event.data.gol.clickSingle(); 
 
             });
 
             $('#refRem').click({gol: this}, function() { 
-                gol.kill(gol.ref.x,gol.ref.y); 
+                event.data.gol.kill(gol.ref.x,gol.ref.y); 
                 $('#refVal').val(''); 
-                gol.ref = null; 
+                event.data.gol.ref = null; 
             }); 
 
             $('#stop').click({gol: this}, function(event) { 
@@ -645,7 +786,7 @@
                 $(event.target).attr({'data-on' : 1}); 
 
                 //attach single click 
-                gol.clickSingle(); 
+                event.data.gol.clickSingle(); 
             }); 
 
             $('#glider').click({gol: this}, function (event) { 
@@ -655,7 +796,7 @@
                 $(event.target).attr({'data-on' : 1}); 
 
                 // attatch glider click
-                gol.clickGlider(); 
+                event.data.gol.clickGlider(); 
             }); 
 
             $('#ship').click({gol: this}, function (event) { 
@@ -665,7 +806,7 @@
                 $(event.target).attr({'data-on' : 1}); 
 
                 // attatch ship click
-                gol.clickShip(); 
+                event.data.gol.clickShip(); 
             }); 
 
 
@@ -676,7 +817,7 @@
                 $(event.target).attr({'data-on' : 1}); 
 
                 // attatch spider click
-                gol.clickSpider(); 
+                event.data.gol.clickSpider(); 
             }); 
 
             $('#block').click({gol: this}, function (event) { 
@@ -686,7 +827,7 @@
                 $(event.target).attr({'data-on' : 1}); 
 
                 // attatch block click
-                gol.clickBlock(); 
+                event.data.gol.clickBlock(); 
             }); 
 
             $('#donut').click({gol: this}, function (event) { 
@@ -696,7 +837,7 @@
                 $(event.target).attr({'data-on' : 1}); 
 
                 // attatch donut click
-                gol.clickDonut(); 
+                event.data.gol.clickDonut(); 
             }); 
 
             $('#handle').click({gol: this}, function (event) { 
@@ -706,7 +847,7 @@
                 $(event.target).attr({'data-on' : 1}); 
 
                 // attatch handle click
-                gol.clickHandle(); 
+                event.data.gol.clickHandle(); 
             }); 
 
             $('#gull').click({gol: this}, function (event) { 
@@ -716,10 +857,18 @@
                 $(event.target).attr({'data-on' : 1}); 
 
                 // attatch gull click
-                gol.clickGull(); 
+                event.data.gol.clickGull(); 
             });
 
-            $('')
+            $('#rocket').click({ gol: this }, function (event) {
+                // reset pattern buttons
+                $('.pattern').css({ 'color': 'black' }).attr({ 'data-on': 0 });
+                $(event.target).css({ 'color': 'orange' });
+                $(event.target).attr({ 'data-on': 1 });
+
+                // attatch gull click
+                event.data.gol.clickRocket();
+            });
 
         },
 
