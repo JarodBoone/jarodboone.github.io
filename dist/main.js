@@ -38,8 +38,9 @@
         state: null, 
 
         // console log 
-        console: $('.gol_console p'), 
+        console: $('.golConsole p'), 
         consoleLength: 0,
+        useConsole: true, 
 
         // are we ticking? 
         running: false, 
@@ -88,8 +89,8 @@
 
         // **** Populate Function ****
         // add a graphic to the cell and set alive if the cell
-        // is dead 
-        populate: function (x,y) { 
+        // is dead printFlag boolean value tellign whether or not to print to the console 
+        populate: function (x,y,printFlag) { 
 
             if (this.cellMatrix[x][y].isAlive){
                 return; 
@@ -106,23 +107,26 @@
             // push onto array of live cells 
             this.state.push(this.cellMatrix[x][y]); 
             
-            var cellStr; 
-            if (this.ref) { 
-                var xOff = this.cellMatrix[x][y].x - this.ref.x; 
-                var yOff = this.cellMatrix[x][y].y - this.ref.y; 
-                var xSign = xOff < 0 ? '-' : '+';  
-                var ySign = yOff < 0 ? '-' : '+';  
+            if (this.useConsole) { 
+                var cellStr;
+                if (this.ref) {
+                    var xOff = this.cellMatrix[x][y].x - this.ref.x;
+                    var yOff = this.cellMatrix[x][y].y - this.ref.y;
+                    var xSign = xOff < 0 ? '-' : '+';
+                    var ySign = yOff < 0 ? '-' : '+';
 
-                var xAddStr = xOff == 0 ? '' : (' ' + xSign + ' ' + Math.abs(xOff)); 
-                var yAddStr = yOff == 0 ? '' : (' ' + ySign + ' ' + Math.abs(yOff)); 
+                    var xAddStr = xOff == 0 ? '' : (' ' + xSign + ' ' + Math.abs(xOff));
+                    var yAddStr = yOff == 0 ? '' : (' ' + ySign + ' ' + Math.abs(yOff));
 
-                cellStr = '(mx' + xAddStr + ',' + 'my' + yAddStr + ')';
+                    cellStr = '(mx' + xAddStr + ',' + 'my' + yAddStr + ')';
 
-            } else {
-                cellStr = '(' + this.cellMatrix[x][y].x + ',' + this.cellMatrix[x][y].y + ')';
+                } else {
+                    cellStr = '(' + this.cellMatrix[x][y].x + ',' + this.cellMatrix[x][y].y + ')';
+                }
+                this.printA(cellStr);
+                this.consoleLength++;
             }
-            this.printA(cellStr); 
-            this.consoleLength++; 
+             
 
             return; 
         }, 
@@ -310,11 +314,12 @@
                 this.state[i].neighboors = 0; 
             }
 
+            // can just kill all of these 
             for (var i = 0; i < killMe.length; i++) { 
                 this.kill(killMe[i].x,killMe[i].y); 
             }
 
-            // can just kill all of these 
+            this.useConsole = false; 
             for (var i = 0; i < watch.length; i++) { 
                 if (watch[i].neighboors == 3) { 
                     this.populate(watch[i].x,watch[i].y); 
@@ -322,6 +327,7 @@
 
                 watch[i].neighboors = 0; 
             }
+            this.useConsole = true; 
 
             return; 
 
@@ -335,7 +341,7 @@
             }
 
             this.console.remove(); 
-            $('.gol_console').append('<p></p>');
+            $('.golConsole').append('<p></p>');
             this.console = $('.gol_console p'); 
 
             return; 
@@ -344,8 +350,8 @@
         // default click handler 
         clickSingle: function() { 
             // reset click handler 
-            $('.game_board').off("click"); 
-            $('.game_board').click({gol: this}, function(event) { 
+            $('.gameBoard').off("click"); 
+            $('.gameBoard').click({gol: this}, function(event) { 
                 event.preventDefault();
                 var gol = event.data.gol;
                 var boardx = $(this).offset().left;
@@ -370,9 +376,9 @@
 
         clickGlider: function () { 
 
-            $('.game_board').off("click"); 
+            $('.gameBoard').off("click"); 
 
-            $(".game_board").click({gol: this}, function (event) {  
+            $(".gameBoard").click({gol: this}, function (event) {  
                 event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
@@ -393,9 +399,9 @@
         }, 
 
         clickShip: function () { 
-            $('.game_board').off("click"); 
+            $('.gameBoard').off("click"); 
 
-            $(".game_board").click({gol: this}, function (event) {  
+            $(".gameBoard").click({gol: this}, function (event) {  
                 event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
@@ -417,9 +423,9 @@
         },
 
         clickSpider: function () { 
-            $('.game_board').off("click"); 
+            $('.gameBoard').off("click"); 
 
-            $(".game_board").click({gol: this}, function (event) {  
+            $(".gameBoard").click({gol: this}, function (event) {  
                 event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
@@ -486,9 +492,9 @@
         },
 
         clickBlock: function () { 
-            $('.game_board').off("click"); 
+            $('.gameBoard').off("click"); 
 
-            $(".game_board").click({gol: this}, function (event) {  
+            $(".gameBoard").click({gol: this}, function (event) {  
                 event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
@@ -506,9 +512,9 @@
         },
 
         clickDonut: function () { 
-            $('.game_board').off("click"); 
+            $('.gameBoard').off("click"); 
 
-            $(".game_board").click({gol: this}, function (event) {  
+            $(".gameBoard").click({gol: this}, function (event) {  
                 event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
@@ -528,9 +534,9 @@
         },
 
         clickHandle: function () { 
-            $('.game_board').off("click"); 
+            $('.gameBoard').off("click"); 
 
-            $(".game_board").click({gol: this}, function (event) {  
+            $(".gameBoard").click({gol: this}, function (event) {  
                 event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
@@ -552,9 +558,9 @@
 
         clickGull: function () { 
 
-            $('.game_board').off("click"); 
+            $('.gameBoard').off("click"); 
 
-            $(".game_board").click({gol: this}, function (event) {  
+            $(".gameBoard").click({gol: this}, function (event) {  
                 event.preventDefault(); 
                 var gol = event.data.gol; 
                 var boardx = $(this).offset().left; 
@@ -575,9 +581,9 @@
 
         clickRocket: function () {
 
-            $('.game_board').off("click");
+            $('.gameBoard').off("click");
 
-            $(".game_board").click({ gol: this }, function (event) {
+            $(".gameBoard").click({ gol: this }, function (event) {
                 event.preventDefault();
                 var gol = event.data.gol;
                 var boardx = $(this).offset().left;
@@ -886,12 +892,12 @@
 
             // have to use jquery to set the game_board elements for some reason because
             // D3 does not want to cooperate 
-            $('.game_board').css({
+            $('.gameBoard').css({
                 "width": this.width,
                 "height": this.height
             });
 
-            this.board = d3.select('.game_board').append('svg');
+            this.board = d3.select('.gameBoard').append('svg');
 
             // size the game board to the given width and height
             this.board.attr('width', this.width)
@@ -929,8 +935,8 @@
         // need to call this function before any the board is used 
         init : function () {
             // set dimensions of the game board
-            this.hRatio = $('.gol_container').height() / 100; 
-            this.height = Math.floor($('.gol_container').parent().height() * this.hRatio); 
+            this.hRatio = $('.golContainer').height() / 100; 
+            this.height = Math.floor($('.golContainer').parent().height() * this.hRatio); 
             this.width = this.height; 
 
             // determine the blockHeight and block width
@@ -942,12 +948,12 @@
 
             // have to use jquery to set the game_board elements for some reason because
             // D3 does not want to cooperate 
-            $('.game_board').css({ 
+            $('.gameBoard').css({ 
                 "width": this.width,
                 "height": this.height
             });  
 
-            this.board = d3.select('.game_board').append('svg'); 
+            this.board = d3.select('.gameBoard').append('svg'); 
 
             // size the game board to the given width and height
             this.board.attr('width', this.width)
