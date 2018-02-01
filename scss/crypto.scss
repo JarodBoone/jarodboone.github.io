@@ -1,0 +1,35 @@
+/* Game of Life Scss file */ 
+@import 'mixin'; 
+
+//************ Variables ************ 
+// Font Pallet 
+$varela: 'Varela Round', sans-serif;
+
+// Font Sizes 
+$title_fs: 70px; // size for main title
+$subTitle_fs: 30px; // size for sub title and program titles 
+$menu_fs: 25px; // size for menu item titles 
+
+// Color Pallet 
+$c_offGray: rgb(154, 165, 165); 
+$c_cleanGray: rgb(220, 220, 220); 
+$c_darkTeal: rgb(70, 102, 102); 
+$c_saphire: rgb(102, 153, 255);
+$c_openGreen: rgb(0, 204, 102);
+$c_openGreen50: rgba(0, 204, 102, 0.5);
+$c_orange: rgb(255, 165, 0); 
+
+
+// Dimensions
+$header_height: 20vh; 
+$sidebar_height: 80vh; 
+$btn_row_height: 10%; 
+
+.cryptoList li {
+    width: 100%; 
+    display: flex; 
+    justify-content: flex-start;
+    height: 90%;  
+    align-items: center; 
+    //border-style: solid; 
+}
