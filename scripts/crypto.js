@@ -34,7 +34,11 @@ function genCoinTab(coin) {
     var cName = coin.name; 
     var cSym = coin.symbol;
     var c1h = coin.percent_change_1h; 
-    var cGrow = c1h.charAt(0) == '-' ? false : true;  
+    var cGrow = c1h.charAt(0) == '-' ? false : true; 
+    
+    if(cGrow) { 
+        c1h = '+' + c1h; 
+    }
 
     // generate list element
     var coinTab = '<li id=' + cSym + '></li>'; 
@@ -49,18 +53,23 @@ function genCoinTab(coin) {
     //     'margin': '10px'
     // })
 
-    if (cGrow) { 
-        coinTab.css({'color':'green'});
-    } else { 
-        coinTab.css({ 'color': 'red' });
-    }
-
     // generate title element
-    coinTab.append('<div class=\"cTitle\">' + cName + '</div>');
+    coinTab.append('<div class=\"cTitle\" id=' + cSym + '>' + cName + '</div>');
 
     // generate price element
-    coinTab.append('<div class=\"cPrice\">' + cPrice + '$</div>'); 
+    coinTab.append('<div class=\"cPrice\" id=' + cSym + '>' + cPrice + '$\t\t\t' + c1h +'$ </div>'); 
 
+    if (cGrow) {
+        $('#' + cSym + ' .cPrice').css({
+            'color': 'rgb(0, 204, 102)'
+            //'background-color': 'rgba(0, 204, 102, 0.5)'
+        });
+    } else {
+        $('#' + cSym + ' .cPrice').css({
+            'color': 'rgb(204, 58, 0)'
+            //'background-color': 'rgba(204, 58, 0, 0.5)'
+        });
+    }
 }
 
 function updateCoinTab(coin) {
@@ -72,17 +81,23 @@ function updateCoinTab(coin) {
     var c1h = coin.percent_change_1h;
     var cGrow = c1h.charAt(0) == '-' ? false : true;
 
-    coinTab = $('#' + cSym);
+    var coinPrice = $('#' + cSym + ' .cPrice');
 
     if (cGrow) {
-        coinTab.css({ 'color': 'green' });
+        c1h = '+' + c1h;
+        coinPrice.css({ 
+            'color': 'rgb(0, 204, 102)'
+            //'background-color': 'rgba(0, 204, 102, 0.5)'
+        });
     } else {
-        coinTab.css({ 'color': 'red' });
+        coinPrice.css({ 
+            'color': 'rgb(204, 58, 0)'
+            //'background-color': 'rgba(204, 58, 0, 0.5)'
+        });
     }
 
-
-    // generate price element
-    $('#' + cSym + ' .cPrice').text(cPrice + '$');
+    // generate price element$('#' + cSym + ' .cPrice')
+    coinPrice.text(cPrice + '$\t\t\t' + c1h +'$');
 
 }
 
@@ -115,3 +130,29 @@ var firstLoad = true;
     });
 
 })(); 
+
+$('.cryptoList>li').mouseover(function(event) {
+    var id = $(event.target).attr('id'); 
+    var target = $('#' + id + ' .cTitle'); 
+
+    target.animate({
+        marginLeft: '100px'
+    },200,function () {
+       // alert('boop'); 
+    });
+
+    $('li #' + id).mouseout(function(event) {
+        var id = $(event.target).attr('id');
+        var target = $('#' + id + ' .cTitle'); 
+
+        target.animate({
+            marginLeft: '0px'
+            }, 200, function () {
+            //alert('boop');
+        });
+    });
+
+});
+// (function applyMouseHandlers() { 
+
+// })

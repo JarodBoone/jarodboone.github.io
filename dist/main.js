@@ -34,7 +34,11 @@ function genCoinTab(coin) {
     var cName = coin.name; 
     var cSym = coin.symbol;
     var c1h = coin.percent_change_1h; 
-    var cGrow = c1h.charAt(0) == '-' ? false : true;  
+    var cGrow = c1h.charAt(0) == '-' ? false : true; 
+    
+    if(cGrow) { 
+        c1h = '+' + c1h; 
+    }
 
     // generate list element
     var coinTab = '<li id=' + cSym + '></li>'; 
@@ -49,18 +53,23 @@ function genCoinTab(coin) {
     //     'margin': '10px'
     // })
 
-    if (cGrow) { 
-        coinTab.css({'color':'green'});
-    } else { 
-        coinTab.css({ 'color': 'red' });
-    }
-
     // generate title element
-    coinTab.append('<div class=\"cTitle\">' + cName + '</div>');
+    coinTab.append('<div class=\"cTitle\" id=' + cSym + '>' + cName + '</div>');
 
     // generate price element
-    coinTab.append('<div class=\"cPrice\">' + cPrice + '$</div>'); 
+    coinTab.append('<div class=\"cPrice\" id=' + cSym + '>' + cPrice + '$\t\t\t' + c1h +'$ </div>'); 
 
+    if (cGrow) {
+        $('#' + cSym + ' .cPrice').css({
+            'color': 'rgb(0, 204, 102)'
+            //'background-color': 'rgba(0, 204, 102, 0.5)'
+        });
+    } else {
+        $('#' + cSym + ' .cPrice').css({
+            'color': 'rgb(204, 58, 0)'
+            //'background-color': 'rgba(204, 58, 0, 0.5)'
+        });
+    }
 }
 
 function updateCoinTab(coin) {
@@ -72,17 +81,23 @@ function updateCoinTab(coin) {
     var c1h = coin.percent_change_1h;
     var cGrow = c1h.charAt(0) == '-' ? false : true;
 
-    coinTab = $('#' + cSym);
+    var coinPrice = $('#' + cSym + ' .cPrice');
 
     if (cGrow) {
-        coinTab.css({ 'color': 'green' });
+        c1h = '+' + c1h;
+        coinPrice.css({ 
+            'color': 'rgb(0, 204, 102)'
+            //'background-color': 'rgba(0, 204, 102, 0.5)'
+        });
     } else {
-        coinTab.css({ 'color': 'red' });
+        coinPrice.css({ 
+            'color': 'rgb(204, 58, 0)'
+            //'background-color': 'rgba(204, 58, 0, 0.5)'
+        });
     }
 
-
-    // generate price element
-    $('#' + cSym + ' .cPrice').text(cPrice + '$');
+    // generate price element$('#' + cSym + ' .cPrice')
+    coinPrice.text(cPrice + '$\t\t\t' + c1h +'$');
 
 }
 
@@ -115,6 +130,32 @@ var firstLoad = true;
     });
 
 })(); 
+
+$('.cryptoList>li').mouseover(function(event) {
+    var id = $(event.target).attr('id'); 
+    var target = $('#' + id + ' .cTitle'); 
+
+    target.animate({
+        marginLeft: '100px'
+    },200,function () {
+       // alert('boop'); 
+    });
+
+    $('li #' + id).mouseout(function(event) {
+        var id = $(event.target).attr('id');
+        var target = $('#' + id + ' .cTitle'); 
+
+        target.animate({
+            marginLeft: '0px'
+            }, 200, function () {
+            //alert('boop');
+        });
+    });
+
+});
+// (function applyMouseHandlers() { 
+
+// })
 (function () {
 
     // cell object 
@@ -167,18 +208,13 @@ var firstLoad = true;
         setRef: false,
 
         // Print to console
-        printA: function (text) { 
+        print: function (text) { 
             var pt = $('#pt').val(); // get pretext 
-            this.console.append(pt + text +'<br>'); 
+            this.console.append(pt + text +';<br>'); 
             // if (this.consoleLength >= 500) { 
             //     this.console.children('p').pop(); 
             // }
 
-        },
-
-        // Print to console without carrots
-        printZ: function (text) {
-            this.console.append('p').text(text);
         },
 
         // **** Kill Function ****
@@ -240,7 +276,7 @@ var firstLoad = true;
                 } else {
                     cellStr = '(' + this.cellMatrix[x][y].x + ',' + this.cellMatrix[x][y].y + ')';
                 }
-                this.printA(cellStr);
+                this.print(cellStr);
                 this.consoleLength++;
             }
              
@@ -256,6 +292,10 @@ var firstLoad = true;
 
             if (this.cellMatrix[x][y].isAlive) {
                 this.kill(this.cellMatrix[x][y].x,this.cellMatrix[x][y].y);
+            }
+
+            if (this.ref) {
+                this.kill(this.ref.x,this.ref.y); 
             }
 
             this.cellMatrix[x][y].isAlive = true;
@@ -275,7 +315,7 @@ var firstLoad = true;
             $('#refVal').val(this.ref.x + ',' + this.ref.y); 
 
             var cellStr = '(' + this.cellMatrix[x][y].x + ',' + this.cellMatrix[x][y].y + ')';
-            this.printA(cellStr);
+            this.print(cellStr);
             this.consoleLength++;
 
             return;
@@ -459,7 +499,7 @@ var firstLoad = true;
 
             this.console.remove(); 
             $('.golConsole').append('<p></p>');
-            this.console = $('.gol_console p'); 
+            this.console = $('.golConsole p'); 
 
             return; 
         },
@@ -538,7 +578,7 @@ var firstLoad = true;
                 gol.populate(mx,my - 3); 
             });
         },
-
+        
         clickSpider: function () { 
             $('.gameBoard').off("click"); 
 
@@ -696,7 +736,7 @@ var firstLoad = true;
             }); 
         },
 
-        clickRocket: function () {
+        clickHenry: function () {
 
             $('.gameBoard').off("click");
 
@@ -823,6 +863,35 @@ var firstLoad = true;
                 gol.populate(mx + 6, my + 13);
                 gol.populate(mx + 6, my + 14);
                 gol.populate(mx + 7, my + 14);
+
+            });
+        },
+
+        clickEgg: function () {
+
+            $('.gameBoard').off("click");
+
+            $(".gameBoard").click({ gol: this }, function (event) {
+                event.preventDefault();
+                var gol = event.data.gol;
+                var boardx = $(this).offset().left;
+                var boardy = $(this).offset().top;
+
+                var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
+                var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+
+                gol.populate(mx, my);
+                gol.populate(mx - 1, my - 2);
+                gol.populate(mx - 1, my - 1);
+                gol.populate(mx + 2, my - 1);
+                gol.populate(mx + 2, my - 2);
+                gol.populate(mx + 1, my - 3);
+                gol.populate(mx, my + 1);
+                gol.populate(mx, my + 2);
+                gol.populate(mx + 1, my + 3);
+                gol.populate(mx + 3, my + 2);
+                gol.populate(mx + 3, my + 1);
+                gol.populate(mx + 2, my);
 
             });
         },
@@ -983,14 +1052,24 @@ var firstLoad = true;
                 event.data.gol.clickGull(); 
             });
 
-            $('#rocket').click({ gol: this }, function (event) {
+            $('#henry').click({ gol: this }, function (event) {
                 // reset pattern buttons
                 $('.pattern').css({ 'color': 'black' }).attr({ 'data-on': 0 });
                 $(event.target).css({ 'color': 'orange' });
                 $(event.target).attr({ 'data-on': 1 });
 
                 // attatch gull click
-                event.data.gol.clickRocket();
+                event.data.gol.clickHenry();
+            });
+
+            $('#egg').click({ gol: this }, function (event) {
+                // reset pattern buttons
+                $('.pattern').css({ 'color': 'black' }).attr({ 'data-on': 0 });
+                $(event.target).css({ 'color': 'orange' });
+                $(event.target).attr({ 'data-on': 1 });
+
+                // attatch gull click
+                event.data.gol.clickEgg();
             });
 
         },
@@ -1002,7 +1081,7 @@ var firstLoad = true;
             this.clean(); 
             this.board.remove(); 
 
-            this.height = Math.floor($('.gol_container').parent().height() * this.hRatio); 
+            this.height = Math.floor($('.golContainer').parent().height() * this.hRatio); 
             this.width = this.height;
             this.blockHeight = this.height / this.numberOfBlocks;
             this.blockWidth = this.width / this.numberOfBlocks;

@@ -18,18 +18,43 @@ $c_saphire: rgb(102, 153, 255);
 $c_openGreen: rgb(0, 204, 102);
 $c_openGreen50: rgba(0, 204, 102, 0.5);
 $c_orange: rgb(255, 165, 0); 
-
+$c_openRed: rgb(204, 58, 0);
+$c_openRed50: rgba(204, 58, 0, 0.5);
+$c_cryptoGold: rgb(255, 214, 51);
+$c_cryptoGold50: rgba(255, 211, 51, 0.5);
 
 // Dimensions
 $header_height: 20vh; 
 $sidebar_height: 80vh; 
 $btn_row_height: 10%; 
 
-.cryptoList li {
+.cryptoList {
     width: 100%; 
-    display: flex; 
-    justify-content: flex-start;
-    height: 90%;  
-    align-items: center; 
+    li {
+        font-family: $varela;
+        font-size: 30px;
+
+        display: flex; 
+        justify-content: flex-start;
+        align-items: center; 
+        margin: 10px; 
+        background-color: $c_cleanGray;
+        @include border-radius(10px);
+
+        .cTitle {
+            margin-right: 100px;
+            @include border-radius(10px); 
+            border-style: solid; 
+            border-width: 2px; 
+            border-color: black; 
+            background-color: $c_cryptoGold50;
+            padding: 10px; 
+        }
+
+
+    }
+    
+
+    
     //border-style: solid; 
 }

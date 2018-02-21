@@ -50,18 +50,13 @@
         setRef: false,
 
         // Print to console
-        printA: function (text) { 
+        print: function (text) { 
             var pt = $('#pt').val(); // get pretext 
-            this.console.append(pt + text +'<br>'); 
+            this.console.append(pt + text +';<br>'); 
             // if (this.consoleLength >= 500) { 
             //     this.console.children('p').pop(); 
             // }
 
-        },
-
-        // Print to console without carrots
-        printZ: function (text) {
-            this.console.append('p').text(text);
         },
 
         // **** Kill Function ****
@@ -123,7 +118,7 @@
                 } else {
                     cellStr = '(' + this.cellMatrix[x][y].x + ',' + this.cellMatrix[x][y].y + ')';
                 }
-                this.printA(cellStr);
+                this.print(cellStr);
                 this.consoleLength++;
             }
              
@@ -139,6 +134,10 @@
 
             if (this.cellMatrix[x][y].isAlive) {
                 this.kill(this.cellMatrix[x][y].x,this.cellMatrix[x][y].y);
+            }
+
+            if (this.ref) {
+                this.kill(this.ref.x,this.ref.y); 
             }
 
             this.cellMatrix[x][y].isAlive = true;
@@ -158,7 +157,7 @@
             $('#refVal').val(this.ref.x + ',' + this.ref.y); 
 
             var cellStr = '(' + this.cellMatrix[x][y].x + ',' + this.cellMatrix[x][y].y + ')';
-            this.printA(cellStr);
+            this.print(cellStr);
             this.consoleLength++;
 
             return;
@@ -342,7 +341,7 @@
 
             this.console.remove(); 
             $('.golConsole').append('<p></p>');
-            this.console = $('.gol_console p'); 
+            this.console = $('.golConsole p'); 
 
             return; 
         },
@@ -421,7 +420,7 @@
                 gol.populate(mx,my - 3); 
             });
         },
-
+        
         clickSpider: function () { 
             $('.gameBoard').off("click"); 
 
@@ -579,7 +578,7 @@
             }); 
         },
 
-        clickRocket: function () {
+        clickHenry: function () {
 
             $('.gameBoard').off("click");
 
@@ -706,6 +705,35 @@
                 gol.populate(mx + 6, my + 13);
                 gol.populate(mx + 6, my + 14);
                 gol.populate(mx + 7, my + 14);
+
+            });
+        },
+
+        clickEgg: function () {
+
+            $('.gameBoard').off("click");
+
+            $(".gameBoard").click({ gol: this }, function (event) {
+                event.preventDefault();
+                var gol = event.data.gol;
+                var boardx = $(this).offset().left;
+                var boardy = $(this).offset().top;
+
+                var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
+                var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+
+                gol.populate(mx, my);
+                gol.populate(mx - 1, my - 2);
+                gol.populate(mx - 1, my - 1);
+                gol.populate(mx + 2, my - 1);
+                gol.populate(mx + 2, my - 2);
+                gol.populate(mx + 1, my - 3);
+                gol.populate(mx, my + 1);
+                gol.populate(mx, my + 2);
+                gol.populate(mx + 1, my + 3);
+                gol.populate(mx + 3, my + 2);
+                gol.populate(mx + 3, my + 1);
+                gol.populate(mx + 2, my);
 
             });
         },
@@ -866,14 +894,24 @@
                 event.data.gol.clickGull(); 
             });
 
-            $('#rocket').click({ gol: this }, function (event) {
+            $('#henry').click({ gol: this }, function (event) {
                 // reset pattern buttons
                 $('.pattern').css({ 'color': 'black' }).attr({ 'data-on': 0 });
                 $(event.target).css({ 'color': 'orange' });
                 $(event.target).attr({ 'data-on': 1 });
 
                 // attatch gull click
-                event.data.gol.clickRocket();
+                event.data.gol.clickHenry();
+            });
+
+            $('#egg').click({ gol: this }, function (event) {
+                // reset pattern buttons
+                $('.pattern').css({ 'color': 'black' }).attr({ 'data-on': 0 });
+                $(event.target).css({ 'color': 'orange' });
+                $(event.target).attr({ 'data-on': 1 });
+
+                // attatch gull click
+                event.data.gol.clickEgg();
             });
 
         },
@@ -885,7 +923,7 @@
             this.clean(); 
             this.board.remove(); 
 
-            this.height = Math.floor($('.gol_container').parent().height() * this.hRatio); 
+            this.height = Math.floor($('.golContainer').parent().height() * this.hRatio); 
             this.width = this.height;
             this.blockHeight = this.height / this.numberOfBlocks;
             this.blockWidth = this.width / this.numberOfBlocks;
