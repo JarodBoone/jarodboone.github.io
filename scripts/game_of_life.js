@@ -738,6 +738,47 @@
             });
         },
 
+        clickDoubleEgg: function () {
+
+            $('.gameBoard').off("click");
+
+            $(".gameBoard").click({ gol: this }, function (event) {
+                event.preventDefault();
+                var gol = event.data.gol;
+                var boardx = $(this).offset().left;
+                var boardy = $(this).offset().top;
+
+                var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
+                var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+
+                gol.populate(mx, my);
+                gol.populate(mx - 1, my - 2);
+                gol.populate(mx - 1, my - 1);
+                gol.populate(mx + 2, my - 1);
+                gol.populate(mx + 2, my - 2);
+                gol.populate(mx + 1, my - 3);
+                gol.populate(mx, my + 1);
+                gol.populate(mx, my + 2);
+                gol.populate(mx + 1, my + 3);
+                gol.populate(mx + 3, my + 2);
+                gol.populate(mx + 3, my + 1);
+                gol.populate(mx + 2, my);
+                gol.populate(mx + 7, my);
+                gol.populate(mx + 6, my - 2);
+                gol.populate(mx + 6, my - 1);
+                gol.populate(mx + 9, my - 1);
+                gol.populate(mx + 9, my - 2);
+                gol.populate(mx + 8, my - 3);
+                gol.populate(mx + 7, my + 1);
+                gol.populate(mx + 7, my + 2);
+                gol.populate(mx + 8, my + 3);
+                gol.populate(mx + 10, my + 2);
+                gol.populate(mx + 10, my + 1);
+                gol.populate(mx + 9, my);
+
+            });
+        },
+
         // function to add mouse handlers to the game board UI 
         mouseHandlers : function () { 
             
@@ -912,6 +953,16 @@
 
                 // attatch gull click
                 event.data.gol.clickEgg();
+            });
+
+            $('#doubleEgg').click({ gol: this }, function (event) {
+                // reset pattern buttons
+                $('.pattern').css({ 'color': 'black' }).attr({ 'data-on': 0 });
+                $(event.target).css({ 'color': 'orange' });
+                $(event.target).attr({ 'data-on': 1 });
+
+                // attatch gull click
+                event.data.gol.clickDoubleEgg();
             });
 
         },
