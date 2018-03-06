@@ -59,6 +59,21 @@ function genCoinTab(coin) {
     // generate price element
     coinTab.append('<div class=\"cPrice\" id=' + cSym + '>' + cPrice + '$\t\t\t' + c1h +'$ </div>'); 
 
+    $('#' + cSym).css({
+        'cursor': 'pointer'
+        //'background-color': 'rgba(0, 204, 102, 0.5)'
+    });
+
+    $('#' + cSym + ' .cPrice').css({
+        'cursor': 'pointer'
+        //'background-color': 'rgba(0, 204, 102, 0.5)'
+    });
+
+    $('#' + cSym + ' .cTitle').css({
+        'cursor': 'pointer'
+        //'background-color': 'rgba(0, 204, 102, 0.5)'
+    });
+
     if (cGrow) {
         $('#' + cSym + ' .cPrice').css({
             'color': 'rgb(0, 204, 102)'
@@ -132,26 +147,43 @@ var firstLoad = true;
 })(); 
 
 $('.cryptoList>li').mouseover(function(event) {
-    var id = $(event.target).attr('id'); 
-    var target = $('#' + id + ' .cTitle'); 
+    var id = $(event.target).attr('id');
+    var target = $('#' + id + ' .cTitle');
 
     target.animate({
-        marginLeft: '100px'
-    },200,function () {
-       // alert('boop'); 
+        marginLeft: '100px' 
+    }, 100, function () {
+        // alert('boop'); 
     });
 
-    $('li #' + id).mouseout(function(event) {
+});
+
+$('.cryptoList>li').mouseout(function (event) {
+    //alert("oooo"); 
+    var hovered = $(event.target).attr('data-hover');
+   // if (hovered == 1) {
         var id = $(event.target).attr('id');
-        var target = $('#' + id + ' .cTitle'); 
+        var to = document.elementFromPoint(event.clientX,event.clientY); 
+
+       // alert(id); 
+
+        if ($(to).attr('id') && $(to).attr('id') == id) {
+            return;
+        }
+        $('#' + id).each(function() {
+            $(this).attr({'data-hover':0});
+        });
+
+        var target = $('#' + id + ' .cTitle');
 
         target.animate({
             marginLeft: '0px'
-            }, 200, function () {
+        }, 100, function () {
             //alert('boop');
         });
-    });
 
+  //  }
+   
 });
 // (function applyMouseHandlers() { 
 
