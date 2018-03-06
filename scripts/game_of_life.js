@@ -578,7 +578,7 @@
             }); 
         },
 
-        clickHenry: function () {
+        clickRocket: function () {
 
             $('.gameBoard').off("click");
 
@@ -854,6 +854,16 @@
                 event.data.gol.clean(); 
             }); 
 
+            $('#zoomIn').click({gol: this}, function(event) { 
+                event.data.gol.numberOfBlocks -= 20; 
+                event.data.gol.resize(1);               
+            }); 
+
+            $('#zoomOut').click({ gol: this }, function (event) {
+                event.data.gol.numberOfBlocks += 20;
+                event.data.gol.resize(2);
+            }); 
+
             $('#single').click({gol: this}, function (event) { 
                 // reset pattern buttons 
                 $('.pattern').css({'color': 'black'}).attr({'data-on' : 0});    
@@ -935,14 +945,14 @@
                 event.data.gol.clickGull(); 
             });
 
-            $('#henry').click({ gol: this }, function (event) {
+            $('#rocket').click({ gol: this }, function (event) {    
                 // reset pattern buttons
                 $('.pattern').css({ 'color': 'black' }).attr({ 'data-on': 0 });
                 $(event.target).css({ 'color': 'orange' });
                 $(event.target).attr({ 'data-on': 1 });
 
                 // attatch gull click
-                event.data.gol.clickHenry();
+                event.data.gol.clickRocket();
             });
 
             $('#egg').click({ gol: this }, function (event) {
@@ -968,7 +978,7 @@
         },
 
         //fucntion to resize the game board based on the gol_container dimensions 
-        resize : function () { 
+        resize : function (zoom) { 
             // copy the state to reapply 
             var temp = this.state.slice(); 
             this.clean(); 
@@ -1016,7 +1026,15 @@
             //alert(temp.length); 
 
             for (var i = 0; i < temp.length; i++) { 
-                this.populate(temp[i].x,temp[i].y); 
+                // ***** FOR WHEN ZOOM FUNCTIONALITY IS IMPLEMENTED *****
+                if (zoom == 1) { 
+                    this.populate(temp[i].x - 10, temp[i].y - 10);
+                } else if (zoom == 2) {
+                    this.populate(temp[i].x + 10, temp[i].y + 10);
+                } else {
+                    this.populate(temp[i].x, temp[i].y);
+                }
+                 
             }
 
         }, 
@@ -1086,7 +1104,7 @@
             this.loadState(null); 
 
             $(window).resize({gol: this}, function(event) {  
-                gol.resize(); 
+                gol.resize(0); 
             });
         }
     };
