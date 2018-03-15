@@ -112,7 +112,7 @@ var sandpile = function() {
 
 
     function run_time_step() {
-        add_sand(start_i + Math.ceil(Math.random() * 4), start_ii + Math.ceil(Math.random() * 4));
+        add_sand(start_i /*+ Math.ceil(Math.random() * 15) */, start_ii /*+ Math.ceil(Math.random() * 15)*/);
         grain_counter++;
     }
 
