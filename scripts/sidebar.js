@@ -85,6 +85,9 @@ $(document).ready(function () {
         });
 
         tab = target.attr('data-tab');
+        if (tab == 2) {
+            sandpile(); 
+        }
 
         selectors[tab].css({
             'background-color': sel_tab_bc,

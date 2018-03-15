@@ -1,9 +1,10 @@
-$(document).ready(function() {
+var sandpile = function() {
     //////////////////////////////////////
     // START DRAWING CODE
     //////////////////////////////////////
 
     var _data; // data from previous update
+    var built = 0; 
 
     function draw_grid(data, colors) {
         var color_obj = {};
@@ -25,8 +26,12 @@ $(document).ready(function() {
             document.getElementsByTagName('body')[0].appendChild(canvas);
         }
 
-        canvas.width = width; 
-        canvas.height = height; 
+        if (built == 0) { 
+            canvas.width = 600; 
+            canvas.height = 600; 
+            built = 1; 
+        }
+
         var context = canvas.getContext("2d");
 
         function draw_cells() {
@@ -107,7 +112,7 @@ $(document).ready(function() {
 
 
     function run_time_step() {
-        add_sand(start_i, start_ii);
+        add_sand(start_i + Math.ceil(Math.random() * 4), start_ii + Math.ceil(Math.random() * 4));
         grain_counter++;
     }
 
@@ -132,5 +137,4 @@ $(document).ready(function() {
             }
         }
     }
-
-}); 
+}; 

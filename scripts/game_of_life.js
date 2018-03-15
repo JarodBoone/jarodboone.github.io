@@ -52,6 +52,10 @@
         ref: null,
         setRef: false,
 
+        // random aspect 
+        rand: 0, 
+        chaos: 0, 
+
         // Print to console
         print: function (text) { 
             var pt = $('#pt').val(); // get pretext 
@@ -209,6 +213,12 @@
 
             // array of cells that could potentially be brought to life 
             var watch = new Array(); 
+            var range = 3; 
+
+            if (this.rand != 0 && this.chaos == 0) {
+                range = Math.ceil(Math.random() * this.rand);
+            }
+            
             
             // determine neighboors 
             for (var i = 0; i < this.state.length; i++){ 
@@ -309,7 +319,10 @@
             var killMe = new Array(); 
 
             for (var i = 0; i < this.state.length; i++) { 
-                if (this.state[i].neighboors < 2 || this.state[i].neighboors > 3) {
+                if (this.rand != 0 && this.chaos == 1) {
+                    range = Math.ceil(Math.random() * this.rand);
+                }
+                if (this.state[i].neighboors < (range- 1) || this.state[i].neighboors > range) {
                     killMe.push(this.state[i]); 
                 }
 
@@ -323,7 +336,10 @@
 
             this.useConsole = false; 
             for (var i = 0; i < watch.length; i++) { 
-                if (watch[i].neighboors == 3) { 
+                if (this.rand != 0 && this.chaos == 1) {
+                    range = Math.ceil(Math.random() * this.rand);
+                }
+                if (watch[i].neighboors == range) { 
                     this.populate(watch[i].x,watch[i].y); 
                 }
 
@@ -881,6 +897,49 @@
                 event.data.gol.kill(gol.ref.x,gol.ref.y); 
                 $('#refVal').val(''); 
                 event.data.gol.ref = null; 
+            }); 
+
+            $('#randSet').click({gol: this}, function(event) {
+
+                var r = $('#randVal').val();
+
+                if (r > 6) {
+                    r = 6; 
+                } else if (r < 0) { 
+                    r = 0; 
+                }
+
+                if (r == 0) { 
+                    $(event.target).css({ 'color': 'black' });
+                    $(event.target).attr({ 'data-on': 0 });
+                    event.data.gol.chaos = 0; 
+                    $('#chaos').css({ 'color': 'black' });
+                    $('#chaos').attr({ 'data-on': 0 });
+                } else if (r > 0) {
+                    $(event.target).css({ 'color': 'orange' });
+                    $(event.target).attr({ 'data-on': 1 });
+                }   
+
+                event.data.gol.rand = r;
+            }); 
+
+            $('#chaos').click({ gol: this }, function (event) {
+
+                if (event.data.gol.rand == 0) {
+                    alert("You must set a random aspect to achieve chaos!"); 
+                    return; 
+                }
+
+                if (event.data.gol.chaos == 1) {
+                    $(event.target).css({ 'color': 'black' });
+                    $(event.target).attr({ 'data-on': 0 });
+                    event.data.gol.chaos = 0; 
+                } else {
+                    $(event.target).css({ 'color': 'orange' });
+                    $(event.target).attr({ 'data-on': 1 });
+                    event.data.gol.chaos = 1; 
+                }
+
             }); 
 
             $('#stop').click({gol: this}, function(event) { 

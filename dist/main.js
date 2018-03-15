@@ -242,6 +242,10 @@ $('.cryptoList>li').mouseout(function (event) {
         ref: null,
         setRef: false,
 
+        // random aspect 
+        rand: 0, 
+        chaos: 0, 
+
         // Print to console
         print: function (text) { 
             var pt = $('#pt').val(); // get pretext 
@@ -399,6 +403,12 @@ $('.cryptoList>li').mouseout(function (event) {
 
             // array of cells that could potentially be brought to life 
             var watch = new Array(); 
+            var range = 3; 
+
+            if (this.rand != 0 && this.chaos == 0) {
+                range = Math.ceil(Math.random() * this.rand);
+            }
+            
             
             // determine neighboors 
             for (var i = 0; i < this.state.length; i++){ 
@@ -499,7 +509,10 @@ $('.cryptoList>li').mouseout(function (event) {
             var killMe = new Array(); 
 
             for (var i = 0; i < this.state.length; i++) { 
-                if (this.state[i].neighboors < 2 || this.state[i].neighboors > 3) {
+                if (this.rand != 0 && this.chaos == 1) {
+                    range = Math.ceil(Math.random() * this.rand);
+                }
+                if (this.state[i].neighboors < (range- 1) || this.state[i].neighboors > range) {
                     killMe.push(this.state[i]); 
                 }
 
@@ -513,7 +526,10 @@ $('.cryptoList>li').mouseout(function (event) {
 
             this.useConsole = false; 
             for (var i = 0; i < watch.length; i++) { 
-                if (watch[i].neighboors == 3) { 
+                if (this.rand != 0 && this.chaos == 1) {
+                    range = Math.ceil(Math.random() * this.rand);
+                }
+                if (watch[i].neighboors == range) { 
                     this.populate(watch[i].x,watch[i].y); 
                 }
 
@@ -1073,6 +1089,49 @@ $('.cryptoList>li').mouseout(function (event) {
                 event.data.gol.ref = null; 
             }); 
 
+            $('#randSet').click({gol: this}, function(event) {
+
+                var r = $('#randVal').val();
+
+                if (r > 6) {
+                    r = 6; 
+                } else if (r < 0) { 
+                    r = 0; 
+                }
+
+                if (r == 0) { 
+                    $(event.target).css({ 'color': 'black' });
+                    $(event.target).attr({ 'data-on': 0 });
+                    event.data.gol.chaos = 0; 
+                    $('#chaos').css({ 'color': 'black' });
+                    $('#chaos').attr({ 'data-on': 0 });
+                } else if (r > 0) {
+                    $(event.target).css({ 'color': 'orange' });
+                    $(event.target).attr({ 'data-on': 1 });
+                }   
+
+                event.data.gol.rand = r;
+            }); 
+
+            $('#chaos').click({ gol: this }, function (event) {
+
+                if (event.data.gol.rand == 0) {
+                    alert("You must set a random aspect to achieve chaos!"); 
+                    return; 
+                }
+
+                if (event.data.gol.chaos == 1) {
+                    $(event.target).css({ 'color': 'black' });
+                    $(event.target).attr({ 'data-on': 0 });
+                    event.data.gol.chaos = 0; 
+                } else {
+                    $(event.target).css({ 'color': 'orange' });
+                    $(event.target).attr({ 'data-on': 1 });
+                    event.data.gol.chaos = 1; 
+                }
+
+            }); 
+
             $('#stop').click({gol: this}, function(event) { 
                 event.data.gol.running = false; 
                 $('#run').attr({"data-on": 0}); 
@@ -1372,12 +1431,13 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
-$(document).ready(function() {
+var sandpile = function() {
     //////////////////////////////////////
     // START DRAWING CODE
     //////////////////////////////////////
 
     var _data; // data from previous update
+    var built = 0; 
 
     function draw_grid(data, colors) {
         var color_obj = {};
@@ -1399,8 +1459,12 @@ $(document).ready(function() {
             document.getElementsByTagName('body')[0].appendChild(canvas);
         }
 
-        canvas.width = width; 
-        canvas.height = height; 
+        if (built == 0) { 
+            canvas.width = 600; 
+            canvas.height = 600; 
+            built = 1; 
+        }
+
         var context = canvas.getContext("2d");
 
         function draw_cells() {
@@ -1481,7 +1545,7 @@ $(document).ready(function() {
 
 
     function run_time_step() {
-        add_sand(start_i, start_ii);
+        add_sand(start_i + Math.ceil(Math.random() * 4), start_ii + Math.ceil(Math.random() * 4));
         grain_counter++;
     }
 
@@ -1506,8 +1570,7 @@ $(document).ready(function() {
             }
         }
     }
-
-}); 
+}; 
 $(document).ready(function () {
 
     var t1 = $('.display.item.t1');
@@ -1595,6 +1658,9 @@ $(document).ready(function () {
         });
 
         tab = target.attr('data-tab');
+        if (tab == 2) {
+            sandpile(); 
+        }
 
         selectors[tab].css({
             'background-color': sel_tab_bc,
