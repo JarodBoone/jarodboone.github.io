@@ -190,6 +190,9 @@ $('.cryptoList>li').mouseout(function (event) {
 // })
 (function () {
 
+    var MAX_ZOOM = 20; 
+    var MIN_ZOOM = 200; 
+
     // cell object 
     function Cell(x,y){
         this.isAlive = false; // boolean stating if cell is alive or dead
@@ -903,29 +906,64 @@ $('.cryptoList>li').mouseout(function (event) {
 
             $('.gameBoard').off("click");
 
-            $(".gameBoard").click({ gol: this }, function (event) {
-                event.preventDefault();
-                var gol = event.data.gol;
-                var boardx = $(this).offset().left;
-                var boardy = $(this).offset().top;
+            var gol = this; 
 
-                var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
-                var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+            $(".gameBoard").each(function () {
+                //alert('nah'); 
+                $(this).click({gol: gol}, function (event) {
+                    //alert("thaaa");
+                    event.preventDefault();
+                    var gol = event.data.gol;
+                    var boardx = $(this).offset().left;
+                    var boardy = $(this).offset().top;
+                    
+                    try {
+                        var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
+                        var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+                    } catch(err) {
+                        alert(err); 
+                    }
+    
+                    
 
-                gol.populate(mx, my);
-                gol.populate(mx - 1, my - 2);
-                gol.populate(mx - 1, my - 1);
-                gol.populate(mx + 2, my - 1);
-                gol.populate(mx + 2, my - 2);
-                gol.populate(mx + 1, my - 3);
-                gol.populate(mx, my + 1);
-                gol.populate(mx, my + 2);
-                gol.populate(mx + 1, my + 3);
-                gol.populate(mx + 3, my + 2);
-                gol.populate(mx + 3, my + 1);
-                gol.populate(mx + 2, my);
+                    gol.populate(mx, my);
+                    gol.populate(mx - 1, my - 2);
+                    gol.populate(mx - 1, my - 1);
+                    gol.populate(mx + 2, my - 1);
+                    gol.populate(mx + 2, my - 2);
+                    gol.populate(mx + 1, my - 3);
+                    gol.populate(mx, my + 1);
+                    gol.populate(mx, my + 2);
+                    gol.populate(mx + 1, my + 3);
+                    gol.populate(mx + 3, my + 2);
+                    gol.populate(mx + 3, my + 1);
+                    gol.populate(mx + 2, my);
+                });
+            })
+           
 
-            });
+            // $(".gameBoard").click({ gol: this }, function (event) {
+            //     event.preventDefault();
+            //     var gol = event.data.gol;
+            //     var boardx = $(this).offset().left;
+            //     var boardy = $(this).offset().top;
+
+            //     var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
+            //     var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+
+            //     gol.populate(mx, my);
+            //     gol.populate(mx - 1, my - 2);
+            //     gol.populate(mx - 1, my - 1);
+            //     gol.populate(mx + 2, my - 1);
+            //     gol.populate(mx + 2, my - 2);
+            //     gol.populate(mx + 1, my - 3);
+            //     gol.populate(mx, my + 1);
+            //     gol.populate(mx, my + 2);
+            //     gol.populate(mx + 1, my + 3);
+            //     gol.populate(mx + 3, my + 2);
+            //     gol.populate(mx + 3, my + 1);
+            //     gol.populate(mx + 2, my);
+            // });
         },
 
         clickDoubleEgg: function () {
@@ -1046,12 +1084,26 @@ $('.cryptoList>li').mouseout(function (event) {
 
             $('#zoomIn').click({gol: this}, function(event) { 
                 event.data.gol.numberOfBlocks -= 20; 
-                event.data.gol.resize(1);               
+                if (event.data.gol.numberOfBlocks == MAX_ZOOM) {
+                    alert('Cannot zoom in anymore. Learn to see the bigger pictures. Particle theory is a misrepresentation of reality'); 
+                    event.data.gol.numberOfBlocks += 20; 
+                     
+                } else { 
+                    event.data.gol.resize(1);
+                }
+               
             }); 
 
             $('#zoomOut').click({ gol: this }, function (event) {
                 event.data.gol.numberOfBlocks += 20;
-                event.data.gol.resize(2);
+                if (event.data.gol.numberOfBlocks == MIN_ZOOM) {
+                    alert('Cannot zoom our anymore. The meanings are in the cells, the \"thing\" is just coincidence');
+                    event.data.gol.numberOfBlocks -= 20;
+                    
+                } else { 
+                    event.data.gol.resize(2);
+                }
+                
             }); 
 
             $('#single').click({gol: this}, function (event) { 
@@ -1196,6 +1248,7 @@ $('.cryptoList>li').mouseout(function (event) {
             for (var row = 0; row <= this.numberOfBlocks; row++) {
 
                 this.board.append('svg:line')
+                    .attr('class', 'gameBoard')
                     .attr('x1', 0)
                     .attr('y1', row * this.blockHeight)
                     .attr('x2', this.width)
@@ -1204,6 +1257,7 @@ $('.cryptoList>li').mouseout(function (event) {
                     .style("stroke-width", 1);
 
                 this.board.append('svg:line')
+                    .attr('class', 'gameBoard')
                     .attr('x1', row * this.blockWidth)
                     .attr('y1', 0)
                     .attr('x2', row * this.blockWidth)
@@ -1212,6 +1266,8 @@ $('.cryptoList>li').mouseout(function (event) {
                     .style("stroke-width", 1);
 
             } 
+
+            this.mouseHandlers();
 
             //alert(temp.length); 
 
@@ -1264,6 +1320,7 @@ $('.cryptoList>li').mouseout(function (event) {
 
             
                 this.board.append('svg:line')
+                .attr('class','gameBoard')
                 .attr('x1',0)
                 .attr('y1',row * this.blockHeight)
                 .attr('x2', this.width)
@@ -1272,6 +1329,7 @@ $('.cryptoList>li').mouseout(function (event) {
                 .style("stroke-width", 1); 
 
                 this.board.append('svg:line')
+                .attr('class','gameBoard')
                 .attr('x1',row * this.blockWidth)
                 .attr('y1',0)
                 .attr('x2', row * this.blockWidth)
@@ -1314,6 +1372,142 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+$(document).ready(function() {
+    //////////////////////////////////////
+    // START DRAWING CODE
+    //////////////////////////////////////
+
+    var _data; // data from previous update
+
+    function draw_grid(data, colors) {
+        var color_obj = {};
+        for (var i = 0; i < colors.length; i += 2) {
+            color_obj[colors[i]] = colors[i + 1];
+        }
+        var width = 600;
+        var height = 600;
+        var grid_length = data.length;
+        var width_cell = width / grid_length;
+        var height_cell = height / grid_length;
+
+        var canvas = document.getElementById("grid")
+        if (canvas == null) {
+            canvas = document.createElement('canvas');
+            canvas.id = "grid";
+            canvas.width = width;
+            canvas.height = height;
+            document.getElementsByTagName('body')[0].appendChild(canvas);
+        }
+
+        canvas.width = width; 
+        canvas.height = height; 
+        var context = canvas.getContext("2d");
+
+        function draw_cells() {
+            for (var i = 0; i < grid_length; i++) {
+                for (var ii = 0; ii < grid_length; ii++) {
+                    if (_data && _data[i][ii] === data[i][ii]) {
+                        continue;
+                    }
+                    context.fillStyle = color_obj[data[i][ii]];
+                    context.fillRect(i * width_cell, ii * height_cell, width_cell, height_cell);
+                }
+            }
+        }
+        draw_cells();
+        if (!_data) {
+            _data = [];
+        }
+        for (var i = 0; i < grid_length; i++) {
+            _data[i] = data[i].slice();
+        }
+    }
+
+    function update_grid(data, colors) {
+        draw_grid(data, colors);
+    }
+
+
+    //////////////////////////////////////
+    // END DRAWING CODE
+    //////////////////////////////////////			
+
+    var grid_length = 300;
+    var grid = [];
+    var temp_grid = [];
+    var colors = ["0", "#ffffff", "1", "#00bfff", "2", "#ffd700", "3", "#b03060"];
+    var population = [];
+
+    var start_i;
+    var start_ii;
+
+    var continue_drawing = true;
+    var grain_counter = 0;
+
+
+
+    function init_grid() {
+        for (var i = 0; i < grid_length; i = i + 1) {
+            grid[i] = [];
+            for (var ii = 0; ii < grid_length; ii = ii + 1) {
+                grid[i][ii] = 0;
+            }
+        }
+        start_i = Math.round(grid_length / 2);
+        start_ii = Math.round(grid_length / 2);
+    }
+
+    init_grid();
+
+    draw_grid(grid, colors);
+
+    run_and_draw();
+
+    function run_and_draw() {
+        var cd = continue_drawing;
+        // the global variable continue_drawing can be set via iframe
+        // to stop the simulation
+        while (cd) {
+            run_time_step();
+            if (grain_counter % 1000 == 0) {
+                cd = false;
+                update_grid(grid, colors);
+                setTimeout(function () {
+                    run_and_draw();
+                }, 1000);
+            }
+        }
+    }
+
+
+    function run_time_step() {
+        add_sand(start_i, start_ii);
+        grain_counter++;
+    }
+
+    function add_sand(i, ii) {
+        var grains = grid[i][ii];
+        if (grains < 3) {
+            grid[i][ii]++;
+        }
+        else {
+            grid[i][ii] = grains - 3;
+            if (i > 0) {
+                add_sand(i - 1, ii);
+            }
+            if (i < grid_length - 1) {
+                add_sand(i + 1, ii);
+            }
+            if (ii > 0) {
+                add_sand(i, ii - 1);
+            }
+            if (ii < grid_length - 1) {
+                add_sand(i, ii + 1);
+            }
+        }
+    }
+
+}); 
 $(document).ready(function () {
 
     var t1 = $('.display.item.t1');
@@ -1416,6 +1610,85 @@ $(document).ready(function () {
         }, 201);
 
     });
+
+
+});
+$(document).ready(function () {
+
+    // taglines that will cycle through 
+    var lines = [ 
+        'Crafty',
+        'Please',
+        '??????????????????????', 
+        'is this where we began...',
+        'call your mom', 
+        'Hello?',
+        '...or where we started?', 
+        'Beep boop boop beep beep',
+        'Hahaha what, no',
+        'I literally cannot see right now', 
+        'Who made this?? XD',
+        'Big if true',
+        'Seize the Means of production',
+        'Don\'t trust what they teach you in school',
+        'Eats his greens',
+        'I never learned how to read',
+        'Testing Testing 123',
+        'Just do it'
+    ]; 
+
+    var index = 15; 
+    var first = 1; 
+    var duration = 10000; 
+
+    // uncomment this when you turn off cycling
+    $('#subTitle').text(lines[index]);
+    (function cycle() {
+
+        var rand = Math.floor(Math.random() * (lines.length));
+
+        if (rand == index) {
+            if (index == 0) {
+                rand++; 
+            } else {
+                rand--; 
+            }
+        }
+
+        if (rand == lines.length) {
+            rand--; 
+        } 
+
+        index = rand; 
+
+        var text = lines[index]; 
+
+        if (first) { 
+            first = 0; 
+            $('#subTitle').text(text);
+                setTimeout(cycle,duration); 
+        } else { 
+            $('#subTitle').animate({
+                marginLeft: '100px',
+                opacity: '0'
+            }, 500, function () {
+                $('#subTitle').text(text);
+            });
+
+            $('#subTitle').animate({
+                marginLeft: '0px',
+                opacity: '100'
+            }, 500, function () {
+                setTimeout(cycle, duration);
+            });
+
+        }
+
+       
+
+    });
+
+
 
 
 });

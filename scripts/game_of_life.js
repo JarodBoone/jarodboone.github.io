@@ -1,5 +1,8 @@
 (function () {
 
+    var MAX_ZOOM = 20; 
+    var MIN_ZOOM = 200; 
+
     // cell object 
     function Cell(x,y){
         this.isAlive = false; // boolean stating if cell is alive or dead
@@ -713,29 +716,64 @@
 
             $('.gameBoard').off("click");
 
-            $(".gameBoard").click({ gol: this }, function (event) {
-                event.preventDefault();
-                var gol = event.data.gol;
-                var boardx = $(this).offset().left;
-                var boardy = $(this).offset().top;
+            var gol = this; 
 
-                var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
-                var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+            $(".gameBoard").each(function () {
+                //alert('nah'); 
+                $(this).click({gol: gol}, function (event) {
+                    //alert("thaaa");
+                    event.preventDefault();
+                    var gol = event.data.gol;
+                    var boardx = $(this).offset().left;
+                    var boardy = $(this).offset().top;
+                    
+                    try {
+                        var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
+                        var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+                    } catch(err) {
+                        alert(err); 
+                    }
+    
+                    
 
-                gol.populate(mx, my);
-                gol.populate(mx - 1, my - 2);
-                gol.populate(mx - 1, my - 1);
-                gol.populate(mx + 2, my - 1);
-                gol.populate(mx + 2, my - 2);
-                gol.populate(mx + 1, my - 3);
-                gol.populate(mx, my + 1);
-                gol.populate(mx, my + 2);
-                gol.populate(mx + 1, my + 3);
-                gol.populate(mx + 3, my + 2);
-                gol.populate(mx + 3, my + 1);
-                gol.populate(mx + 2, my);
+                    gol.populate(mx, my);
+                    gol.populate(mx - 1, my - 2);
+                    gol.populate(mx - 1, my - 1);
+                    gol.populate(mx + 2, my - 1);
+                    gol.populate(mx + 2, my - 2);
+                    gol.populate(mx + 1, my - 3);
+                    gol.populate(mx, my + 1);
+                    gol.populate(mx, my + 2);
+                    gol.populate(mx + 1, my + 3);
+                    gol.populate(mx + 3, my + 2);
+                    gol.populate(mx + 3, my + 1);
+                    gol.populate(mx + 2, my);
+                });
+            })
+           
 
-            });
+            // $(".gameBoard").click({ gol: this }, function (event) {
+            //     event.preventDefault();
+            //     var gol = event.data.gol;
+            //     var boardx = $(this).offset().left;
+            //     var boardy = $(this).offset().top;
+
+            //     var mx = Math.floor((event.pageX - boardx) / gol.blockWidth) - 1;
+            //     var my = Math.floor((event.pageY - boardy) / gol.blockHeight);
+
+            //     gol.populate(mx, my);
+            //     gol.populate(mx - 1, my - 2);
+            //     gol.populate(mx - 1, my - 1);
+            //     gol.populate(mx + 2, my - 1);
+            //     gol.populate(mx + 2, my - 2);
+            //     gol.populate(mx + 1, my - 3);
+            //     gol.populate(mx, my + 1);
+            //     gol.populate(mx, my + 2);
+            //     gol.populate(mx + 1, my + 3);
+            //     gol.populate(mx + 3, my + 2);
+            //     gol.populate(mx + 3, my + 1);
+            //     gol.populate(mx + 2, my);
+            // });
         },
 
         clickDoubleEgg: function () {
@@ -856,12 +894,26 @@
 
             $('#zoomIn').click({gol: this}, function(event) { 
                 event.data.gol.numberOfBlocks -= 20; 
-                event.data.gol.resize(1);               
+                if (event.data.gol.numberOfBlocks == MAX_ZOOM) {
+                    alert('Cannot zoom in anymore. Learn to see the bigger pictures. Particle theory is a misrepresentation of reality'); 
+                    event.data.gol.numberOfBlocks += 20; 
+                     
+                } else { 
+                    event.data.gol.resize(1);
+                }
+               
             }); 
 
             $('#zoomOut').click({ gol: this }, function (event) {
                 event.data.gol.numberOfBlocks += 20;
-                event.data.gol.resize(2);
+                if (event.data.gol.numberOfBlocks == MIN_ZOOM) {
+                    alert('Cannot zoom our anymore. The meanings are in the cells, the \"thing\" is just coincidence');
+                    event.data.gol.numberOfBlocks -= 20;
+                    
+                } else { 
+                    event.data.gol.resize(2);
+                }
+                
             }); 
 
             $('#single').click({gol: this}, function (event) { 
@@ -1006,6 +1058,7 @@
             for (var row = 0; row <= this.numberOfBlocks; row++) {
 
                 this.board.append('svg:line')
+                    .attr('class', 'gameBoard')
                     .attr('x1', 0)
                     .attr('y1', row * this.blockHeight)
                     .attr('x2', this.width)
@@ -1014,6 +1067,7 @@
                     .style("stroke-width", 1);
 
                 this.board.append('svg:line')
+                    .attr('class', 'gameBoard')
                     .attr('x1', row * this.blockWidth)
                     .attr('y1', 0)
                     .attr('x2', row * this.blockWidth)
@@ -1022,6 +1076,8 @@
                     .style("stroke-width", 1);
 
             } 
+
+            this.mouseHandlers();
 
             //alert(temp.length); 
 
@@ -1074,6 +1130,7 @@
 
             
                 this.board.append('svg:line')
+                .attr('class','gameBoard')
                 .attr('x1',0)
                 .attr('y1',row * this.blockHeight)
                 .attr('x2', this.width)
@@ -1082,6 +1139,7 @@
                 .style("stroke-width", 1); 
 
                 this.board.append('svg:line')
+                .attr('class','gameBoard')
                 .attr('x1',row * this.blockWidth)
                 .attr('y1',0)
                 .attr('x2', row * this.blockWidth)
